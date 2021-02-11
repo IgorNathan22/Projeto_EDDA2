@@ -1,4 +1,6 @@
 #include "quicksort.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 int particiona (float * vetor, int ini, int pivo) 
 {    
@@ -44,4 +46,5 @@ void mostra_notas (float *notas, int tamanho) {
   	printf("[%.2f] ", notas[i]);
 	}
 	printf("\n");
+	getch();
 }
