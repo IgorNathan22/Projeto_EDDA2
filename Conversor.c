@@ -4,17 +4,17 @@
 
 #include "quicksort.h"
 
-
 //void testeArquivo();	
 void cadastroMedico();
 	
 int main(void)
 {
-	float notas[6] = {8.0, 3.5, 7.2, 30.0, 15.5, 22.2}; 
+	int tamanho_vetor = 6;
+	float notas[tamanho_vetor] = {8.0, 3.5, 7.2, 30.0, 15.5, 22.2}; 
 	float * ptr_quick = notas;
 	
-	quick_sort(ptr_quick, 0, 4);
-	mostra_notas(ptr_quick, 6);
+	quick_sort(ptr_quick, 0, tamanho_vetor - 1);
+	mostra_notas(ptr_quick, tamanho_vetor);
 	
 	cadastroMedico();
 //	testeArquivo();
