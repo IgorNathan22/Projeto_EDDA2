@@ -6,50 +6,31 @@
 
 //void testeArquivo();	
 void cadastroMedico();
-	
+#define MAX 5	
+
 int main(void)
 {
-	int tamanho_vetor = 6;
-	float notas[tamanho_vetor] = {8.0, 3.5, 7.2, 30.0, 15.5, 22.2}; 
-	float * ptr_quick = notas;
+//	int *tamanho_vetor = 6;
+//	float notas[6] = {8.0, 3.5, 7.2, 30.0, 15.5, 22.2}; 
+//	float * ptr_quick = notas;
+//	
+//	quick_sort(ptr_quick, 0, MAX - 1);
+//	mostra_notas(ptr_quick, MAX);
 	
-	quick_sort(ptr_quick, 0, tamanho_vetor - 1);
-	mostra_notas(ptr_quick, tamanho_vetor);
-	
-	cadastroMedico();
-//	testeArquivo();
+//	cadastroMedico();
+	testeArquivo();
 	return(0);
 }
 
-//void testeArquivo() {
-//	// Teste de criação de arquivo
-//	typedef struct {
-//		char nome[31];
-//		float salario;
-//	} Func;
-//		
-//	FILE *s;
-//	Func f;
-//
-//	if((s=fopen("func.dat", "wb")) == NULL) {
-//		printf("Arquivo não pode ser criado");
-//		exit(1);
-//	}
-//	
-//	printf("Digite ponto para finalizar o cadastramento: \n");
-//	
-//	while(1) {
-//		printf("\nNome? "); fflush(stdin); gets(f.nome);
-//		
-//		if( !strcmp(f.nome, ".")) break;
-//		
-//		printf("\nSalario? "); fflush(stdin); scanf("%f", &f.salario);
-//		
-//		fwrite(&f, sizeof(Func),1,s);
-//	}
-//	
-//	fclose(s);
-//}
+void testeArquivo() {
+	int c;
+	FILE *file;
+	file = fopen("MEDICOSCREMESP.csv", "r");
+	if (file) {
+	  while ((c = getc(file)) != EOF) putchar(c);
+  	fclose(file);
+	}	
+}
 
 void cadastroMedico() {
 	// Protótipo do cadastro de médicos
@@ -64,11 +45,11 @@ void cadastroMedico() {
 		// Adicionar a especialidade?
 	} Medico;
 	
-	FILE *s2;
+	FILE *s;
 	Medico m;
 
-	if((s2=fopen("MEDICOSCREMESP.csv", "r")) == NULL) {
-		printf("Arquivo não pode ser criado");
+	if((s=fopen("MEDICOSCREMESP.csv", "r")) == NULL) {
+		printf("Arquivo não pode ser lido");
 		exit(1);
 	}
 	
