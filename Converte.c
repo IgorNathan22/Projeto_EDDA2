@@ -11,28 +11,26 @@ typedef struct{
 	char dt_final[10+1];
 	char cidade[37+1];
 	char estado[2+1];
-	char especializacao[80+1];
+	char especializacao[200+1];
 }MEDICO;
 
 FILE *arqCsv;
 FILE *arqDat;
 MEDICO medico;
 int i;
-int j;
-int count = 0;
+int qntlinhas;
 
 void converter(void){
-	char especialaux[80+1];
-		arqCsv = fopen("MEDICOSCREMESP.CSV","r");
+	arqCsv = fopen("MEDICOSCREMESP.CSV","r");
 	if(arqCsv == NULL){
 		printf("Erro ao abrir o arquivo MEDICOSCREMESP.CSV!\n");
 		getch();
 		exit(0);
 	}
 	
-	arqDat = fopen("MEDICOS.DAT","w");
+	arqDat = fopen("MEDICOSCREMESP.DAT","w");
 	if(arqDat == NULL){
-		printf("Erro ao abrir o arquivo MEDICOS.DAT!\n");
+		printf("Erro ao abrir o arquivo MEDICOSCREMESP.DAT!\n");
 		getch();
 		exit(0);
 	}
@@ -89,14 +87,7 @@ void converter(void){
 		}
 		
 		//printf("\nConvertendo a especialização\n");
-		
-		for (i=0; i<81; i++){
-			especialaux[i] = '\0';
-		}
-		  // trata o custoaux
-		  // "limpa" o custoaux preenchendo-o com '\0' NULL TERMINATOR
 	    i=0;  
-	    
 	    do
 	    {   
 			medico.especializacao[i] = fgetc(arqCsv);
@@ -112,46 +103,30 @@ void converter(void){
 	    }
 	    while ( medico.especializacao[i] != '\n' && medico.especializacao[i] != EOF );
 	    medico.especializacao[i] = '\0';
-		/*
-		//printf ("\nTeste2\n");
-		count = 0;
-		//printf("\n %i i || %i count", i, count);
-		if(i != -1){
-			while (count != i){
-				medico.especializacao[count] = especialaux[count];
-				count++;
-			}
-		}
-		//printf("\n %i i || %i count", i, count);
-		
-	    //printf("\nConverção especial concluida\n");
-	    */
+	    
 		fwrite (&medico, sizeof(medico), 1, arqDat);
 		if ( ferror(arqDat) ){
 			printf("\nErro de leitura!\n"); 
 			getch();
 			exit(0);
 		}
-		//printf("\nEscrita da linha concluida\n");
-
 	}
-	//printf("\nTESTETESTETESTE\n");
 	fclose(arqCsv);
 	fclose(arqDat);
 }
 
 void mostraDAT (void)
 {
-	arqDat = fopen ("MEDICOS.DAT", "r");
+	arqDat = fopen ("MEDICOSCREMESP.DAT", "r");
 	if (arqDat==NULL)
 	{
 		system ("cls");
-		printf ("\n  ERRO AO ABRIR ARQUIVO PRODUTOS.DAT  ");
+		printf ("\n  ERRO AO ABRIR ARQUIVO MEDICOSCREMESP.DAT  ");
 		getch();
 		exit(0);
 	}
 	
-	printf ("\n----- CONTEÚDO DE MEDICOS.DAT ------");
+	printf ("\n----- CONTEÚDO DE MEDICOSCREMESP.DAT ------");
 	//printf ("\nCOD    NOME DO PRODUTO     CUSTO (R$)");
 	//printf ("\n-------------------------------------");
 	while ( !feof(arqDat) )
@@ -161,13 +136,14 @@ void mostraDAT (void)
 		if ( ferror(arqDat) )
 		{
 			system ("cls");
-			printf ("\n  ERRO AO LER ARQUIVO PRODUTOS.DAT  ");
+			printf ("\n  ERRO AO LER ARQUIVO MEDICOSCREMESP.DAT  ");
 			getch();
 			exit(0);
 		}
 		if (feof(arqDat)) break;
 		/* Mostra registro lido */
-		printf ("\n[%s] [%s] [%s] [%s] [%s] [%s] [%s] [%s]", medico.crm, medico.nome, medico.status,  medico.dt_admicao, medico.dt_final, medico.cidade, medico.estado, medico.especializacao);
+		//printf ("\n[%s] [%s] [%s] [%s] [%s] [%s] [%s] [%s]", medico.crm, medico.nome, medico.status,  medico.dt_admicao, medico.dt_final, medico.cidade, medico.estado, medico.especializacao);
+		qntlinhas++;
 	}
 	fclose (arqDat);
 	getch();
@@ -178,7 +154,7 @@ int main(){
 	setlocale (LC_ALL, "");
 	converter();
 	mostraDAT();
-	printf("\nOperação concluida!\n");
+	printf("\nOperação concluida! \nLinhas convertidas: %i\n", qntlinhas);
 	getch();
 	return(0);
 };
