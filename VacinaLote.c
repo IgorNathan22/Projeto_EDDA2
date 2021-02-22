@@ -105,7 +105,6 @@ int cadastraLote() {
 	while (verificaIdVacina(reg_lote.id_vacina) == false) {
 		printf("\n Não existe vacina com esse id!");
 		printf("\n\n Id da vacina: "); scanf("%d", &reg_lote.id_vacina);
-//		exit(0);
 	}
 
 	printf("\nId do lote: "); fflush(stdin); gets(reg_lote.id_lote);
