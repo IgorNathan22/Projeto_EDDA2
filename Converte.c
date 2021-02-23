@@ -4,7 +4,7 @@
 
 
 typedef struct{
-	char crm[6+1];
+	int crm;
 	char nome[42+1];
 	char status[2];
 	char dt_admicao[10+1];
@@ -21,6 +21,7 @@ int i;
 int qntlinhas;
 
 void converter(void){
+	char aux[6+1];
 	arqCsv = fopen("MEDICOSCREMESP.CSV","r");
 	if(arqCsv == NULL){
 		printf("Erro ao abrir o arquivo MEDICOSCREMESP.CSV!\n");
@@ -37,12 +38,18 @@ void converter(void){
 	while(!feof(arqCsv)){
 		
 		//printf("Convertendo o CRM\n");
+		for(i = 0; i < 7;i++){
+			aux[i] = '\0';
+		}
+		
 		for(i = 0; i < 7; i++){
-			medico.crm[i] = fgetc(arqCsv);
-			if(medico.crm[i] == ';'){
-				medico.crm[i] = '\0';
+			aux[i] = fgetc(arqCsv);
+			if(aux[i] == ';'){
+				aux[i] = '\0';
 			}
 		}
+		
+		medico.crm = atoi(aux);
 		//printf("\nConvertendo o nome\n");
 		for(i = 0; i < 43; i++){
 			medico.nome[i] = fgetc(arqCsv);
@@ -110,6 +117,7 @@ void converter(void){
 			getch();
 			exit(0);
 		}
+		qntlinhas++;
 	}
 	fclose(arqCsv);
 	fclose(arqDat);
@@ -127,11 +135,8 @@ void mostraDAT (void)
 	}
 	
 	printf ("\n----- CONTEÚDO DE MEDICOSCREMESP.DAT ------");
-	//printf ("\nCOD    NOME DO PRODUTO     CUSTO (R$)");
-	//printf ("\n-------------------------------------");
 	while ( !feof(arqDat) )
 	{
-		/* lê o DAT */
 		fread (&medico, sizeof(medico), 1, arqDat);
 		if ( ferror(arqDat) )
 		{
@@ -140,19 +145,22 @@ void mostraDAT (void)
 			getch();
 			exit(0);
 		}
-		if (feof(arqDat)) break;
-		/* Mostra registro lido */
-		//printf ("\n[%s] [%s] [%s] [%s] [%s] [%s] [%s] [%s]", medico.crm, medico.nome, medico.status,  medico.dt_admicao, medico.dt_final, medico.cidade, medico.estado, medico.especializacao);
-		qntlinhas++;
+		if (feof(arqDat))
+		{
+			break;
+		} 
+		printf ("\n[%6.i] [%s] [%s] [%s] [%s] [%s] [%s] [%s]", medico.crm, medico.nome, medico.status,  medico.dt_admicao, medico.dt_final, medico.cidade, medico.estado, medico.especializacao);
+		
 	}
 	fclose (arqDat);
-	getch();
 }
 
 int main(){
-
 	setlocale (LC_ALL, "");
+	system ("mode 170,50");
+	//int *vetorcrm;
 	converter();
+	//vetorcrm = (int *) malloc(qntlinhas * sizeof(int));
 	mostraDAT();
 	printf("\nOperação concluida! \nLinhas convertidas: %i\n", qntlinhas);
 	getch();
