@@ -4,6 +4,7 @@
 #include <conio.h>
 #include <string.h>
 #include <locale.h>
+#include "bibliotecas\\funcoes_gerais.h"
 
 /* Tipos pré-definidos */
 typedef struct
@@ -27,45 +28,12 @@ typedef struct {
 } Registro_lote;
 
 /* Variáveis globais */
+
 registro_vacina  reg;
 Registro_lote reg_lote;
 
-FILE      *DAT;
-int       i, cont=0;
-
 #define MAX_DEFAULT  5
 #define MAX_LOTE_DEFAULT 6
-#define true 0
-#define false -1
-
-/* Funções */
-int lerQtdRegistros(char file_name[]) {
-
-	DAT = fopen (file_name, "r");
-	if (DAT == NULL) {
-		return 0;
-	}
-	fseek(DAT, 0L, SEEK_END);
-	long int res = ftell(DAT);
-	fclose(DAT);
-	return res;
-}
-
-void  errolerCSV (void)
-{
-	system ("cls");
-	printf ("\n  ERRO AO LER ARQUIVO PRODUTOS.CSV  ");
-	getch();
-	exit(0);
-}
-
-void errogravarDAT (void)
-{
-	system ("cls");
-	printf ("\n  ERRO AO GRAVAR NO ARQUIVO PRODUTOS.DAT  ");
-	getch();
-	exit(0);
-}
 
 int verificaIdVacina(int id_vacina) {
 	DAT = fopen ("VACINAS.DAT", "r");
