@@ -1,27 +1,15 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <locale.h>
-
-
-typedef struct{
-	int crm;
-	char nome[42+1];
-	char status[2];
-	char dt_admicao[10+1];
-	char dt_final[10+1];
-	char cidade[37+1];
-	char estado[2+1];
-	char especializacao[200+1];
-}MEDICO;
+#include "VacinaJa.h"
 
 FILE *arqCsv;
 FILE *arqDat;
 MEDICO medico;
 int i;
+int contTeste;
 int qntlinhas;
 
 void converter(void){
 	char aux[6+1];
+	contTeste = 0;
 	arqCsv = fopen("MEDICOSCREMESP.CSV","r");
 	if(arqCsv == NULL){
 		printf("Erro ao abrir o arquivo MEDICOSCREMESP.CSV!\n");
@@ -38,6 +26,7 @@ void converter(void){
 	while(!feof(arqCsv)){
 		
 		//printf("Convertendo o CRM\n");
+		
 		for(i = 0; i < 7;i++){
 			aux[i] = '\0';
 		}
@@ -48,7 +37,7 @@ void converter(void){
 				aux[i] = '\0';
 			}
 		}
-		
+		aux[--i] ='\0';
 		medico.crm = atoi(aux);
 		//printf("\nConvertendo o nome\n");
 		for(i = 0; i < 43; i++){
@@ -123,6 +112,39 @@ void converter(void){
 	fclose(arqDat);
 }
 
+void ordenarMedicos(void){
+	int *vetorcrm;
+	vetorcrm = (int *) malloc(qntlinhas * sizeof(int));
+	arqDat = fopen("MEDICOSCREMESP.DAT", "r+");
+	if (arqDat == NULL){
+		system ("cls");
+		printf ("\n  ERRO AO ABRIR ARQUIVO MEDICOSCREMESP.DAT  ");
+		getch();
+		exit(0);
+	}
+	i = 0;
+	while( !feof(arqDat)){
+		fread(&medico, sizeof(medico), 1, arqDat);
+		if ( ferror(arqDat) )
+		{
+			system ("cls");
+			printf ("\n  ERRO AO LER ARQUIVO MEDICOSCREMESP.DAT  ");
+			getch();
+			exit(0);
+		}
+		if (feof(arqDat))
+		{
+			break;
+		} 
+		vetorcrm[i] = medico.crm;
+		printf("Nome [%s] [%6.i] indice = %i\n", medico.nome,vetorcrm[i], i );
+		i++;
+	}
+	for( i = 0; i > qntlinhas; i++){
+		printf("[%6.i]\n", vetorcrm[i]);
+	}
+}
+
 void mostraDAT (void)
 {
 	arqDat = fopen ("MEDICOSCREMESP.DAT", "r");
@@ -158,11 +180,11 @@ void mostraDAT (void)
 int main(){
 	setlocale (LC_ALL, "");
 	system ("mode 170,50");
-	//int *vetorcrm;
 	converter();
-	//vetorcrm = (int *) malloc(qntlinhas * sizeof(int));
 	mostraDAT();
+	//ordenarMedicos();
 	printf("\nOperação concluida! \nLinhas convertidas: %i\n", qntlinhas);
+	printf("\nContTeste = %i", contTeste);
 	getch();
 	return(0);
 };
