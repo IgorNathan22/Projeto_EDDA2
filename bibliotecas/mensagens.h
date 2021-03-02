@@ -3,17 +3,6 @@
 #include <conio.h>
 #include <locale.h>
 
-typedef struct{
-	int crm;
-	char nome[42+1];
-	char status[2];
-	char dt_admicao[10+1];
-	char dt_final[10+1];
-	char cidade[37+1];
-	char estado[2+1];
-	char especializacao[200+1];
-}MEDICO;
-
 void msg_erro_alocacao (void) {
 	system ("cls"); system ("color 04"); system ("mode 70,3");
 	printf("\n\t\tMalloc devolveu NULL!");
