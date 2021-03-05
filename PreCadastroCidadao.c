@@ -152,7 +152,6 @@ void converter(void){
 			}
 		}
 		
-		//printf("\nConvertendo a especialização\n");
 	    i=0;  
 	    do
 	    {   
@@ -161,7 +160,6 @@ void converter(void){
 				printf("Deu RUIM"); 
 				exit(0);
 			} 
-	        //printf ("Teste");
 	        if ( cid.tel[i] == '\n' || cid.tel[i] == EOF ){
 	        	break;
 			} 

@@ -25,6 +25,7 @@ typedef struct {
 	int qtd_frascos;
 	char data_fab[10+1];
 	char data_ven[10+1];
+  double ven_prox;
 } Registro_lote;
 
 /* Variáveis globais */
@@ -63,6 +64,13 @@ int verificaIdVacina(int id_vacina) {
 
 int cadastraLote() {
 	
+	char dia_aux[2+1];
+	char mes_aux[2+1];
+	char ano_aux[4+1];
+	float dia;
+	float mes;
+	float ano;
+		
 	system("cls"); system ("color 80");
 
 	FILE 	*DAT = fopen ("LOTESVACINA.DAT", "a");
@@ -82,6 +90,37 @@ int cadastraLote() {
 	printf("\nData de fabricação (dd/mm/aaaa): "); fflush(stdin); gets(reg_lote.data_fab);
 
 	printf("\nData de vencimento (dd/mm/aaaa): "); fflush(stdin); gets(reg_lote.data_ven);
+	
+	for(i= 0; i<3; i++) {
+		dia_aux[i] = '\0';
+		mes_aux[i] = '\0';
+	}
+	
+	for (i=0;i<5;i++) {
+		ano_aux[i] = '\0';
+	}
+	
+	for(i= 0; i<2; i++) {
+		dia_aux[i] = reg_lote.data_ven[i];
+//		if(reg_lote.data_ven[i] == '/'); break;
+	}
+	
+	for(i= 0; i<2; i++) {
+		mes_aux[i] = reg_lote.data_ven[i+3];
+//		if(reg_lote.data_ven[i+3] == '/'); break;
+	}
+	
+	for(i= 0; i<4; i++) {
+		ano_aux[i] = reg_lote.data_ven[i+6];
+//		if(reg_lote.data_ven[i+6] == '/'); break;
+	}
+	
+	printf("Dia: %s Mês: %s Ano: %s", dia_aux, mes_aux, ano_aux);
+	
+	dia = atof(dia_aux);
+	mes = atof(mes_aux);
+	ano = atof(ano_aux);
+	reg_lote.ven_prox = (double)(dia/365)+(mes/12)+ano;
 
 	fwrite (&reg_lote, sizeof(reg_lote), 1, DAT);
 	
@@ -206,13 +245,14 @@ void consultaLote() {
 void cadastraLoteDefault() {
 	Registro_lote reg_lote[MAX_LOTE_DEFAULT] =
 	{
-   {1, "20210001", 50, "10/01/2021", "05/01/2022"},
-   {1, "20210002", 50, "11/03/2021", "06/03/2022"},
-   {2, "20200001", 50, "16/12/2020", "11/12/2021"},
-   {3, "21210001", 25, "15/03/2021", "10/03/2022"},
-   {4, "21210001", 25, "14/05/2021", "09/05/2022"},
-   {5, "20200001", 50, "15/12/2020", "10/12/2021"},
+   {1, "20210001", 50, "10/01/2021", "05/01/2022",2022.09703},
+   {1, "20210002", 50, "11/03/2021", "06/03/2022",2022.26644},
+   {2, "20200001", 50, "16/12/2020", "11/12/2021",2022.03014},
+   {3, "21210001", 25, "15/03/2021", "10/03/2022",2022.2774},
+   {4, "21210001", 25, "14/05/2021", "09/05/2022",2022.44132},
+   {5, "20200001", 50, "15/12/2020", "10/12/2021",2022.0274},
 	};
+	
 	
 	DAT = fopen("LOTESVACINA.dat", "w");
 	
