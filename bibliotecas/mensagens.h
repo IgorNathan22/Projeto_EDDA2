@@ -1,7 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <conio.h>
-
 void msg_erro_alocacao (void) {
 	system ("cls"); system ("color 04"); system ("mode 70,3");
 	printf("\n\t\tMalloc devolveu NULL!");
@@ -17,9 +13,10 @@ void msg_arq_inexistente (void) {
 }
 
 void msg_erro_login (void) {
-	system ("cls"); system ("color 40"); system ("mode 70,3");
-	printf("\n\t\tERRO: MÉDICO E/OU CRM INVÁLIDO!");
+	system ("cls"); system ("color 40"); system ("mode 70,5");
+	printf("\n\n\t\tERRO: MÉDICO E/OU CRM INVÁLIDO!");
 	getch();
+	exit(1);
 }
 
 void msg_olhas_vazias (void) {
