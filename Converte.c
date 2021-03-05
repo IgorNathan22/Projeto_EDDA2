@@ -8,23 +8,6 @@ int tamanhovetor;
 int qntregistros;
 void envia_vet_ordenado_dat(MEDICO * vetormedico);
 
-long int findSize(char file_name[]) 
-{ 
-    // opening the file in read mode 
-    FILE* fp = fopen(file_name, "r");   
-    // checking if the file exist or not 
-    if (fp == NULL) { 
-        printf("File Not Found!\n"); 
-        return -1; 
-    } 
-    fseek(fp, 0L, SEEK_END); 
-    // calculating the size of the file 
-    long int res = ftell(fp); 
-    // closing the file 
-    fclose(fp); 
-    return res; 
-}
-
 void troca (MEDICO *A, MEDICO *B) 
 {
   MEDICO aux = *A; 
@@ -63,7 +46,7 @@ void quick_sort	(MEDICO * vetor, int ini, int fim)
 
 void converter(void){
 	char aux[6+1];
-	char ch;
+	//char ch;
 	arqCsv = fopen("MEDICOSCREMESP.CSV","r");
 	if(arqCsv == NULL){
 		printf("Erro ao abrir o arquivo MEDICOSCREMESP.CSV!\n");
@@ -80,6 +63,7 @@ void converter(void){
 	while(!feof(arqCsv)){
 		
 		//printf("Convertendo o CRM\n");
+		/*
 		i=0;
 	    do
 	    {
@@ -90,7 +74,19 @@ void converter(void){
 	    while ( ch != ';'); 
         aux[--i] = '\0';
         medico.crm = atoi(aux);
-        
+        */
+		for (i=0; i<7; i++) 
+		  aux[i] = '\0';
+		
+        for(i= 0; i< 7; i++){
+        	aux[i] = fgetc(arqCsv);
+        	if(aux[i] == ';'){
+        		aux[i] = '\0';
+			}
+		}
+		aux[--i] = '\0';
+        medico.crm = atoi(aux);
+        //printf ("\naux = [%s] medico.crm = [%i]", aux, medico.crm); getch();
 		//printf("\nConvertendo o nome\n");
 		for(i = 0; i < 43; i++){
 			medico.nome[i] = fgetc(arqCsv);
@@ -140,7 +136,7 @@ void converter(void){
 	    {   
 			medico.especializacao[i] = fgetc(arqCsv);
 	        if ( ferror(arqCsv) ){
-				printf("Deu RUIM"); 
+				printf("\nErro de leitura!"); 
 				exit(0);
 			} 
 	        //printf ("Teste");
@@ -184,8 +180,6 @@ void ordenarMedicos(void){
     	printf ("\nO arquivo MEDICOSCREMESP.DAT possui %ld registros", qntregistros);
     	Sleep(2000);
 	}*/
-	//int *vetormedico;
-	//vetormedico = (int *) malloc(qntlinhas * sizeof(int));
 	arqDat = fopen("MEDICOSCREMESP.DAT", "rb+");
 	if (arqDat == NULL){
 		system ("cls");
@@ -214,7 +208,7 @@ void ordenarMedicos(void){
 	/*for( i = 0; i < qntlinhas; i++){
 		printf("[%6.i]\n", vetorcrm[i]); DEBUG
 	}*/
-	quick_sort(vetormedico, 0, qntregistros);
+	quick_sort(vetormedico, 0, qntregistros-1);
 	envia_vet_ordenado_dat(vetormedico);
 }
 
@@ -272,7 +266,65 @@ void envia_vet_ordenado_dat (MEDICO	* vetormedico)
 	}
 	fclose(arqDat);
 	printf ("\nMEDICOSCREMESP.DAT ordenado com sucesso!");
+	free(vetormedico);
 	getch();
+}
+
+void consulta_dat_em_relatorio(void)
+{
+	FILE 				* ArqDat, *Relat;
+	MEDICO				medico;
+	long int 			cont=0;
+	int 				qtd_registros;
+	
+	system ("cls"); system ("mode 170,50");
+
+	tamanhovetor  = findSize("MEDICOSCREMESP.DAT");
+	qtd_registros = tamanhovetor/sizeof(MEDICO);
+    qntregistros  = qtd_registros;
+    
+	ArqDat = fopen ("MEDICOSCREMESP.DAT", "rb+");
+	if ( ArqDat==NULL )
+	{
+		system ("cls");
+		printf ("Erro ao ler arquivo MEDICOSCREMESP.DAT");
+		getch();
+		exit(0);
+	}
+	
+	Relat = fopen ("MEDICOSCREMESP.TXT", "wt");
+	if ( ArqDat==NULL )
+	{
+		system ("cls");
+		printf ("Erro ao gerar arquivo MEDICOSCREMESP.TXT");
+		getch();
+		exit(0);
+	}
+	printf ("\nGerando relatório: MEDICOSCREMESP.TXT...");
+	fprintf (Relat, "______________________________________________________________________________________________________________________________________________________________________________________________________________________________________\n");
+	fprintf (Relat, "#         COD	         NOME                                                                                                   \n");
+	fprintf (Relat, "______________________________________________________________________________________________________________________________________________________________________________________________________________________________________");
+	
+	while ( !feof(ArqDat) )
+	{
+		// Limpa o registro 
+		/*
+		memset(medico.Municipio,       '\0', sizeof(reg.Municipio));
+		memset(reg.Nome_Escola,     '\0', sizeof(reg.Nome_Escola));
+		reg.PK_COD_ENTIDADE = 0;*/
+		cont++;
+		fread (&medico, sizeof(medico), 1, ArqDat);
+				
+		if ( !feof(ArqDat) )
+			fprintf (Relat,"\n%5i->[%8i]\t[%-100s]", 
+			(int)cont, medico.crm, medico.nome);
+		
+		if (feof(ArqDat)) break; 		
+	}
+    fclose(ArqDat);
+    fclose(Relat);
+    system ("notepad MEDICOSCREMESP.TXT");
+    getch();
 }
 
 int main(){
@@ -280,8 +332,8 @@ int main(){
 	system ("mode 170,50");
 	converter();
 	ordenarMedicos();
+	//consulta_dat_em_relatorio();
 	//mostraDAT();
-	
 	printf("\nOperação concluida! \nLinhas convertidas: %i\n", qntregistros);
 	getch();
 	return(0);
