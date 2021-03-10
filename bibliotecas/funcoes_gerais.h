@@ -22,6 +22,23 @@ typedef struct{
 	char especializacao[200+1];
 }MEDICO;
 
+void menu (void) {
+	system ("cls"); system ("color B0"); system ("mode 70,15");
+	char controle;
+	controle = 'a';
+	while(controle != '0'){
+		system("cls");
+		printf("\n\t\t\tADM VACINA");
+		printf("\n\n ---------------------------------------------------------------------");
+		printf("\n\t\t1. Pré-cadastro de cidadãos");
+		printf("\n\t\t2. Cadastro de vacinas");
+		printf("\n\t\t3. Atendimento");
+		printf("\n\t\t0. ENCERRAR");
+		printf("\n\n\t\t Opção desejada: ");
+		scanf("%c", &controle);
+	}
+}
+
 long int findSize(char file_name[]) 
 { 
     // opening the file in read mode 

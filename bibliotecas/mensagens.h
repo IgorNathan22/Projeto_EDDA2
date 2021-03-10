@@ -29,18 +29,7 @@ void msg_usu_inativo (void) {
 	system ("cls"); system ("color 40"); system ("mode 70,3");
 	printf("\n\t\tUSUÁRIO INATIVO!");
 	getch();
-}
-
-void login (void) {
-	system ("cls"); system ("color B0"); system ("mode 70,15");
-	printf("\n\t\t\tADM VACINA");
-	printf("\n\n ---------------------------------------------------------------------");
-	printf("\n\t\t1. Pré-cadastro de cidadãos");
-	printf("\n\t\t2. Cadastro de vacinas");
-	printf("\n\t\t3. Atendimento");
-	printf("\n\t\t0. ENCERRAR");
-	printf("\n\n\t\t Opção desejada: ");
-	getch();
+	exit(1);
 }
 
 
