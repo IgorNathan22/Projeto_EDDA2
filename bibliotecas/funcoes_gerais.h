@@ -22,20 +22,39 @@ typedef struct{
 	char especializacao[200+1];
 }MEDICO;
 
-void menu (void) {
-	system ("cls"); system ("color B0"); system ("mode 70,15");
-	char controle;
-	controle = 'a';
-	while(controle != '0'){
-		system("cls");
-		printf("\n\t\t\tADM VACINA");
-		printf("\n\n ---------------------------------------------------------------------");
-		printf("\n\t\t1. Pré-cadastro de cidadãos");
-		printf("\n\t\t2. Cadastro de vacinas");
-		printf("\n\t\t3. Atendimento");
-		printf("\n\t\t0. ENCERRAR");
-		printf("\n\n\t\t Opção desejada: ");
-		scanf("%c", &controle);
+int menu (int controle) {
+	printf("\n\t\t\tADM VACINA");
+	printf("\n\n ---------------------------------------------------------------------");
+	printf("\n\t\t1. Pré-cadastro de cidadãos");
+	printf("\n\t\t2. Cadastro de vacinas");
+	printf("\n\t\t3. Atendimento");
+	printf("\n\t\t0. ENCERRAR");
+	printf("\n\n\t\t Opção desejada: ");
+	scanf("%i", &controle);
+	switch(controle)
+	{
+		case 1 :
+			system("PreCadastroCidadao.exe");
+			return controle = 1;
+		break;
+		
+		case 2 :
+			system("CadastroVacinaLote.exe");
+			return controle = 2;
+		break;
+			
+		case 3 :
+			printf("\n\tEM CONSTRUÇÃO\n");
+			system("");
+			getch();
+			return controle = 3;
+		break;
+		
+		case 0 : 
+			return controle = 0;
+		default :
+			printf("\nValor inválido\n");
+			getch();
 	}
 }
 
