@@ -32,4 +32,18 @@ void msg_usu_inativo (void) {
 	exit(1);
 }
 
+void msg_sup_cheia (void) {
+	system ("cls"); system ("color 40"); system ("mode 70,3");
+	printf("\n\t\tSUPORTES CHEIOS!");
+	getch();
+	exit(1);
+}
+
+void msg_sup_vazio (void) {
+	system ("cls"); system ("color 40"); system ("mode 70,3");
+	printf("\n\t\tSUPORTES VAZIOS!");
+	getch();
+	exit(1);
+}
+
 

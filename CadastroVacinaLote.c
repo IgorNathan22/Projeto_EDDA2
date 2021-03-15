@@ -6,6 +6,9 @@
 #include <locale.h>
 #include "bibliotecas\\funcoes_gerais.h"
 
+#define true 1
+#define false -1
+
 /* Tipos pré-definidos */
 typedef struct
 {
@@ -142,7 +145,7 @@ void cadastraVacina() {
 
 	FILE 	*DAT = fopen ("VACINAS.DAT", "a");
 	registro_vacina reg;
-	int tamanho = ((int) lerQtdRegistros("VACINAS.DAT") ) /sizeof(reg);
+	int tamanho = ((int) findSize("VACINAS.DAT") ) /sizeof(reg);
 	
 	reg.id = tamanho +  1; 
 	printf("Id: %i", reg.id);
@@ -291,6 +294,9 @@ void cadastraDefault() {
 	getch();
 }
 
+void acondicionaFrascos() {
+	system("SuportesPilha.exe");
+}
 
 /* Corpo do programa */
 int main()
@@ -302,21 +308,22 @@ int main()
 		system ("cls"); system ("color D0"); system ("mode 70,15");
 		printf("\n\t\t\tCADASTRO DE VACINAS/LOTES");
 		printf("\n\n ---------------------------------------------------------------------");
-		printf("\n\t\t1. Cadastra vacinas");
-		printf("\n\t\t2. Consulta vacinas");
-		printf("\n\t\t3. Cadastro default");
+		printf("\n\t\t1. Cadastro default");
+		printf("\n\t\t2. Cadastra vacinas");
+		printf("\n\t\t3. Consulta vacinas");
 		printf("\n\t\t4. Cadastro lotes");
 		printf("\n\t\t5. Consulta lotes");
-		printf("\n\t\t0. ENCERRAR");
+		printf("\n\t\t0. ENCERRAR (acondiciona nos suportes)");
 		printf("\n\n\t\t Opção desejada: ");
 		scanf("%i", &resp);
 
 		switch(resp) {
-			case 1: cadastraVacina(); break;
-			case 2: consultaVacina(); break;
-			case 3: cadastraDefault(); break;
+			case 1: cadastraDefault(); break;
+			case 2: cadastraVacina(); break;
+			case 3: consultaVacina(); break;
 			case 4: cadastraLote(); break;
 			case 5: consultaLote(); break;
+			case 0: acondicionaFrascos(); break;
 		}
 
 	} while(resp != 0);
