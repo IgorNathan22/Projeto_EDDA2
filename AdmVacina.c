@@ -8,7 +8,7 @@ int main(void)
 	controle = -1;
 	while(controle != 0){
 		system("cls"); system ("color B0"); system ("mode 70,15");
-		controle = menu(controle);
+		controle = menuprincipal(controle);
 	}
 	return(0);
 }	

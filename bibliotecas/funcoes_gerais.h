@@ -18,7 +18,24 @@ typedef struct{
 	char especializacao[200+1];
 }MEDICO;
 
-int menu (int controle) {
+typedef struct{
+	char nome[50+1];
+	char nasc[10+1];
+	int idade;
+	char cpf[11+1];
+	char pais[20+1];
+	char estado[25+1];
+	char munic[50+1];
+	char lograd[50+1];
+	char nro[6+1];
+	char comp[15+1];
+	char bairro[25+1];
+	char cep[10+1];
+	char email[50+1];
+	char tel[15+1];
+}Cidadao;
+
+int menuprincipal (int controle) {
 	printf("\n\t\t\tADM VACINA");
 	printf("\n\n ---------------------------------------------------------------------");
 	printf("\n\t\t1. Pré-cadastro de cidadãos");
