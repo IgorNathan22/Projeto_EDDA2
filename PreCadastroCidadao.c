@@ -279,7 +279,7 @@ void consulta_dat_em_relatorio(void)
 	
 	printf ("\nGerando relatório: MUNICIPES.TXT...");
 	fprintf (Relat, "______________________________________________________________________________________________________________________________________________________________________________________________________________________________________\n");
-	fprintf (Relat, "NOME COMPLETO                                        DATA NASCIMENTO         CPF    PAÍS      ESTADO             MUNICÍPIO                      LOGRADOURO                  NÚMERO COMPLEMENTO          BAIRRO        CEP           E-MAIL                                           CELULAR\n");
+	fprintf (Relat, "NOME COMPLETO                                        IDADE    DATA NASCIMENTO         CPF    PAÍS      ESTADO             MUNICÍPIO                      LOGRADOURO                  NÚMERO COMPLEMENTO          BAIRRO        CEP           E-MAIL                                           CELULAR\n");
 	fprintf (Relat, "______________________________________________________________________________________________________________________________________________________________________________________________________________________________________");
 	
 	while ( !feof(arqDat) )
@@ -287,8 +287,8 @@ void consulta_dat_em_relatorio(void)
 		fread (&cid, sizeof(cid), 1, arqDat);
 				
 		if ( !feof(arqDat) )
-			fprintf (Relat,"\n[%-53s]\t[%-10s]\t[%3i]\t[%-11s]\t[%-10s]\t[%-20s]\t[%-30s]\t[%-30s]\t[%-14s]\t[%-14s]\t[%-20s]\t[%-8s]\t[%-50s]\t[%-10s]\n", 
-			cid.nome, cid.nasc, cid.idade, cid.cpf, cid.pais, cid.estado, cid.munic, cid.lograd, cid.nro, cid.comp, cid.bairro, cid.cep, cid.email, cid.tel);
+			fprintf (Relat,"\n[%-53s]\t[%i]\t[%-10s]\t[%3i]\t[%-11s]\t[%-10s]\t[%-20s]\t[%-30s]\t[%-30s]\t[%-14s]\t[%-14s]\t[%-20s]\t[%-8s]\t[%-50s]\t[%-10s]\n", 
+			cid.nome, cid.idade, cid.nasc, cid.idade, cid.cpf, cid.pais, cid.estado, cid.munic, cid.lograd, cid.nro, cid.comp, cid.bairro, cid.cep, cid.email, cid.tel);
 		if (feof(arqDat)) break; 		
 	}
     fclose(arqDat);
