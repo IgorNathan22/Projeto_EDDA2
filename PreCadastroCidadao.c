@@ -301,7 +301,7 @@ int menu (int controle) {
 	printf("\n\n ---------------------------------------------------------------------");
 	printf("\n\t\t1. Pré-cadastro de cidadãos default");
 	printf("\n\t\t2. Cadastro de cidadão");
-	printf("\n\t\t3. Consulta cidadões");
+	printf("\n\t\t3. Consulta cidadãos");
 	printf("\n\t\t0. ENCERRAR");
 	printf("\n\n\t\t Opção desejada: ");
 	scanf("%i", &controle);

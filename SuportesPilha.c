@@ -345,10 +345,10 @@ void geraDistribuicao (PILHA* p)
 //		    printf("\nSUPORTE: Vacina = [%i] Lote = [%s] Frascos = [%i]", 
 //		    r[i-1].id_vacina, r[i-1].id_lote, r[i-1].id_frasco);		
 		    //insere frasco na pilha
-	        if ( inserirElemPilha(p, r[i-1]) == true )
+	        if ( inserirElemPilha(p, r[i-1]) == true ) {
 //	          printf ("\nFrasco [%i-%s-%i] inserido com sucesso.", 
 			  r[i-1].id_vacina, r[i-1].id_lote, r[i-1].id_frasco);
-	        else
+	        }else
 	          printf ("\nFrasco [%i] NAO inserido!", r[i-1].id_frasco );
 		   }
 	    }
