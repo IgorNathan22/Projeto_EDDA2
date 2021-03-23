@@ -8,23 +8,14 @@ int qntregistros;
 
 void statusmedico(MEDICO medico);
 
-//int busca_binaria(int crmlogin, char nomemedico[43], MEDICO *vetormedico) // 
-int busca_binaria(int crmlogin, char usuario[43], MEDICO *vetormedico) // 
+int busca_binaria(int crmlogin, char usuario[43], MEDICO *vetormedico)
 {    
 	int ini=0, fim=qntregistros, meio;    
-	//printf("\nCRM PASSADO: %i\nCRM MEDICO VETOR: %i, NOME PASSADO = [%s]\n", crmlogin, vetormedico[crmlogin].crm, usuario);
-	//printf("CRM PASSADO: %i qntregistros: %i", crmlogin, qntregistros);
 	
 	while (ini<=fim)    
 	{        
 		meio=(ini+fim)/2; 
 		if ( (vetormedico[meio].crm==crmlogin) && (strcmp(vetormedico[meio].nome,usuario)==0 ) ){	
-		    //para debug 
-		    //printf("\nO string comparation está retornando, primeiro if: %i\n", strcmp(vetormedico[meio].nome,usuario));
-			//printf ("\nACHOU! CRM = %i NOME DO MÉDICO = %s \n\tTAMANHO DA STRING DO MEDICO %i \t TAMANHO DA STRING PASSADA %i\n", 
-			//vetormedico[meio].crm, vetormedico[meio].nome, strlen(vetormedico[meio].nome), strlen(usuario));
-			//printf ("\nPressione qualquer tecla.");
-			//getch();
 			statusmedico(vetormedico[meio]);
 			return meio; 
 		}    
@@ -55,10 +46,6 @@ void tratarusuario(char usuario[43], int tamanhostring){
 		usuario[tamanhostring] = ' ';
 		tamanhostring++;
 	}
-	
-	/*tamanhostring = strlen(usuario);
-	printf("\nTAMANHO DA STRING DO USUARIO PÓS TRATAMENTO = %i\n", tamanhostring); //DEBUG
-	getch();*/
 }
 
 void abastecervetor(MEDICO *vetormedico){
@@ -89,12 +76,21 @@ void abastecervetor(MEDICO *vetormedico){
 	}
 }
 
+void menu(int controle){
+	while(controle != 0){
+		system("cls"); system ("color B0"); system ("mode 70,15");
+		controle = opcoes(controle);
+	}
+}
+	
+
 int main(){
 	char 	usuario[42+1];
 	int 	crmlogin;
 	int tamanhostring;
 	MEDICO 	* vetormedico;
-
+	
+	system("Converte.exe");
 	setlocale (LC_ALL, "");
 	system("mode 60, 20");
 	printf("\t-----------LOGIN DO MÉDICO---------\n\n");
@@ -103,7 +99,7 @@ int main(){
 	scanf("%i", &crmlogin);
 	printf("NOME:	   \t");
 	fflush(stdin);
-	gets(usuario); //	scanf("%[^\n]s", &usuario);
+	gets(usuario);
 	tamanhostring = strlen(usuario);
 	tratarusuario(usuario, tamanhostring);
 	
@@ -124,9 +120,9 @@ int main(){
 	}
 	free(vetormedico);
 	
-	system("cls"); system ("color A0"); system("mode 50,5");
-	printf("\tUSUARIO LOGADO COM SUCESSO!");
+	system("cls"); system ("color A0"); system("mode 50,10");
+	printf("\n\n\n\n\tUSUARIO LOGADO COM SUCESSO!");
 	getch();
-	system("AdmVacina.exe");
+	menu(-1);
 	return(0);
 }

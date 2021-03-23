@@ -18,35 +18,33 @@ void troca (MEDICO *A, MEDICO *B)
 int particiona (MEDICO * vetor, int ini, int pivo) 
 {    
     int   i;
-    int   p_maior = ini; /* a posição do maior é a do início do vetor */    
+    int   p_maior = ini;
     
-    for ( i=ini; i<pivo; i++ ) /* percorre o vetor da posição ini até a do pivô */
+    for ( i=ini; i<pivo; i++ )
     {        
-       if ( vetor[i].crm < vetor[pivo].crm ) /*se o elemento da posição atual for menor que o pivô...*/
+       if ( vetor[i].crm < vetor[pivo].crm )
        {            
-            troca(  &vetor[i], &vetor[p_maior]); /*...troca o atual com o maior */
-            p_maior++; /* o maior avança uma posição */
+            troca(  &vetor[i], &vetor[p_maior]);
+            p_maior++;
        }    
    }     
-   /* percorrido o vetor, o pivô troca de posição com a do maior elemento... */
    troca(  &vetor[p_maior], &vetor[pivo]); 
-   return p_maior; /* ... e o maior elemento passa a ser o novo pivô */ 
+   return p_maior;
 }
 
 void quick_sort	(MEDICO * vetor, int ini, int fim) 
 {    
    int pivo;
-   if ( ini<fim ) /* Caso base */ 
+   if ( ini<fim )
    {        
-        pivo = particiona ( vetor, ini, fim ); /* Particiona o vetor*/ 
-        quick_sort( vetor, ini,    pivo-1 );    /* Ordena do início do vetor até antes do pivô */
-        quick_sort( vetor, pivo+1, fim);      /* Ordena desde após o pivô até o fim do vetor */
+        pivo = particiona ( vetor, ini, fim );
+        quick_sort( vetor, ini,    pivo-1 );
+        quick_sort( vetor, pivo+1, fim);
    } 
 }
 
 void converter(void){
 	char aux[6+1];
-	//char ch;
 	arqCsv = fopen("MEDICOSCREMESP.CSV","r");
 	if(arqCsv == NULL){
 		printf("Erro ao abrir o arquivo MEDICOSCREMESP.CSV!\n");
@@ -60,21 +58,8 @@ void converter(void){
 		getch();
 		exit(0);
 	}
+	
 	while(!feof(arqCsv)){
-		
-		//printf("Convertendo o CRM\n");
-		/*
-		i=0;
-	    do
-	    {
-	    	ch = fgetc(arqCsv);
-	   		aux[i] = ch;
-	   		i++;
-	    }
-	    while ( ch != ';'); 
-        aux[--i] = '\0';
-        medico.crm = atoi(aux);
-        */
 		for (i=0; i<7; i++) 
 		  aux[i] = '\0';
 		
@@ -136,10 +121,9 @@ void converter(void){
 	    {   
 			medico.especializacao[i] = fgetc(arqCsv);
 	        if ( ferror(arqCsv) ){
-				printf("\nErro de leitura!"); 
+				printf("\nErro durante a conversão!"); 
 				exit(0);
 			} 
-	        //printf ("Teste");
 	        if ( medico.especializacao[i] == '\n' || medico.especializacao[i] == EOF ){
 	        	break;
 			} 
@@ -150,7 +134,7 @@ void converter(void){
 	    
 		fwrite (&medico, sizeof(medico), 1, arqDat);
 		if ( ferror(arqDat) ){
-			printf("\nErro de leitura!\n"); 
+			printf("\nErro a conversão!\n"); 
 			getch();
 			exit(0);
 		}
@@ -201,18 +185,13 @@ void ordenarMedicos(void){
 		{
 			break;
 		} 
-		//vetormedico[i] = medico.crm;
-		//printf("Nome [%s] [%6.i] indice = %i\n", medico.nome, medico.crm, i ); //DEBUG
 		i++;
 	}
-	/*for( i = 0; i < qntlinhas; i++){
-		printf("[%6.i]\n", vetorcrm[i]); DEBUG
-	}*/
 	quick_sort(vetormedico, 0, qntregistros-1);
 	envia_vet_ordenado_dat(vetormedico);
 }
 
-void mostraDAT (void)
+/*void mostraDAT (void)
 {
 	arqDat = fopen ("MEDICOSCREMESP.DAT", "rb");
 	if (arqDat==NULL)
@@ -243,7 +222,7 @@ void mostraDAT (void)
 	}
 	fclose (arqDat);
 }
-
+*/
 void envia_vet_ordenado_dat (MEDICO	* vetormedico)
 {
     long int i;
@@ -259,18 +238,18 @@ void envia_vet_ordenado_dat (MEDICO	* vetormedico)
     	fwrite (&vetormedico[i], sizeof(vetormedico[i]), 1, arqDat);
     	if ( ferror(arqDat) )
    	    {  system ("cls");
-		   printf ("Erro ao gravar no arquivo MEDICOSCREMESP.DAT no registro %li!", i);
+		   printf ("Erro ao gravar no arquivo MEDICOSCREMESP.DAT!");
 		   getch();
 		   exit(0);	
 		}
 	}
 	fclose(arqDat);
-	printf ("\nMEDICOSCREMESP.DAT ordenado com sucesso!");
+//	printf ("\nMEDICOSCREMESP.DAT ordenado com sucesso!");
 	free(vetormedico);
-	getch();
+//	getch();
 }
 
-void consulta_dat_em_relatorio(void)
+/*void consulta_dat_em_relatorio(void)
 {
 	FILE 				* ArqDat, *Relat;
 	MEDICO				medico;
@@ -307,11 +286,6 @@ void consulta_dat_em_relatorio(void)
 	
 	while ( !feof(ArqDat) )
 	{
-		// Limpa o registro 
-		/*
-		memset(medico.Municipio,       '\0', sizeof(reg.Municipio));
-		memset(reg.Nome_Escola,     '\0', sizeof(reg.Nome_Escola));
-		reg.PK_COD_ENTIDADE = 0;*/
 		cont++;
 		fread (&medico, sizeof(medico), 1, ArqDat);
 				
@@ -326,15 +300,17 @@ void consulta_dat_em_relatorio(void)
     system ("notepad MEDICOSCREMESP.TXT");
     getch();
 }
-
+*/
 int main(){
 	setlocale (LC_ALL, "");
-	system ("mode 170,50");
+	system("mode 60, 20");
+	printf("\tConvertendo o arquivo MEDICOSCREMESP.CSV\n");
 	converter();
 	ordenarMedicos();
 	//consulta_dat_em_relatorio();
 	//mostraDAT();
-	printf("\nOperação concluida! \nLinhas convertidas: %i\n", qntregistros);
+	//printf("\nOperação concluida! \nLinhas convertidas: %i\n", qntregistros);
+	printf("\n\tArquivo MEDICOSCREMESP.CSV carregado com sucesso\n");
 	getch();
 	return(0);
 };

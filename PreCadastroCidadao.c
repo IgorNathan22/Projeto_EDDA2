@@ -278,17 +278,31 @@ void consulta_dat_em_relatorio(void)
 	}
 	
 	printf ("\nGerando relatório: MUNICIPES.TXT...");
-	fprintf (Relat, "______________________________________________________________________________________________________________________________________________________________________________________________________________________________________\n");
-	fprintf (Relat, "NOME COMPLETO                                        IDADE    DATA NASCIMENTO         CPF    PAÍS      ESTADO             MUNICÍPIO                      LOGRADOURO                  NÚMERO COMPLEMENTO          BAIRRO        CEP           E-MAIL                                           CELULAR\n");
-	fprintf (Relat, "______________________________________________________________________________________________________________________________________________________________________________________________________________________________________");
-	
+	//fprintf (Relat, "_____________________________________________________________________________________________________________________________________________________________\n");
+	//fprintf (Relat, "NOME COMPLETO        IDADE    DATA NASCIMENTO         CPF    PAÍS      ESTADO             MUNICÍPIO               LOGRADOURO          NÚMERO               COMPLEMENTO          BAIRRO        CEP           E-MAIL                         CELULAR\n");
+	//fprintf (Relat, "_____________________________________________________________________________________________________________________________________________________________");
+	fprintf(Relat, "\n\t\t\t\tMUNICIPES.TXT\t\t\t\t\n");
 	while ( !feof(arqDat) )
 	{
 		fread (&cid, sizeof(cid), 1, arqDat);
 				
-		if ( !feof(arqDat) )
-			fprintf (Relat,"\n[%-53s]\t[%i]\t[%-10s]\t[%3i]\t[%-11s]\t[%-10s]\t[%-20s]\t[%-30s]\t[%-30s]\t[%-14s]\t[%-14s]\t[%-20s]\t[%-8s]\t[%-50s]\t[%-10s]\n", 
-			cid.nome, cid.idade, cid.nasc, cid.idade, cid.cpf, cid.pais, cid.estado, cid.munic, cid.lograd, cid.nro, cid.comp, cid.bairro, cid.cep, cid.email, cid.tel);
+		if ( !feof(arqDat) ){
+			fprintf(Relat,"\nREGISTRO DO MUNÍCIPE:{\n");
+			fprintf(Relat,"NOME: 	%-45s\n", cid.nome);
+			fprintf(Relat,"DATA DE NASCIMENTO: %-10s\n", cid.nasc);
+			fprintf(Relat,"CPF: 	%-11s\n", cid.cpf);
+			fprintf(Relat,"PAÍS: 	%-10s\n", cid.pais);
+			fprintf(Relat,"ESTADO: %-20s\n", cid.estado);
+			fprintf(Relat,"MUNICÍPIO: %-30s\n", cid.munic);
+			fprintf(Relat,"LOGRADOURO: %-30s\n", cid.lograd);
+			fprintf(Relat,"NÚMERO DO ENDEREÇO: %-7s\n", cid.nro);
+			fprintf(Relat,"COMPLEMENTO: 	%-14s\n", cid.comp);
+			fprintf(Relat,"BAIRRO:	%-20s\n", cid.bairro);
+			fprintf(Relat,"CEP: 	%-8s\n", cid.cep);
+			fprintf(Relat,"EMAIL: 	%-40s\n", cid.email);
+			fprintf(Relat,"TELEFONE: %-10s}\n", cid.tel);
+			//fprintf (Relat," }\n");
+		}
 		if (feof(arqDat)) break; 		
 	}
     fclose(arqDat);

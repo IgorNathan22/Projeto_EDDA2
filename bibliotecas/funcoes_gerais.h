@@ -4,6 +4,9 @@
 #include <locale.h>
 #include <string.h>
 
+#define false -1
+#define true 1
+
 FILE      *DAT;
 int       i, cont=0;
 
@@ -35,7 +38,7 @@ typedef struct{
 	char tel[15+1];
 }Cidadao;
 
-int menuprincipal (int controle) {
+int opcoes (int controle) {
 	printf("\n\t\t\tADM VACINA");
 	printf("\n\n ---------------------------------------------------------------------");
 	printf("\n\t\t1. Pré-cadastro de cidadãos");
@@ -57,9 +60,7 @@ int menuprincipal (int controle) {
 		break;
 			
 		case 3 :
-			printf("\n\tEM CONSTRUÇÃO\n");
-			system("");
-			getch();
+			system("Atendimento.exe");
 			return controle = 3;
 		break;
 		
@@ -77,8 +78,11 @@ long int findSize(char file_name[])
     FILE* fp = fopen(file_name, "r");   
     // checking if the file exist or not 
     if (fp == NULL) { 
-        printf("File Not Found!\n"); 
-        return -1; 
+        system ("cls"); system ("color 04"); system ("mode 70,3");
+		printf("\n\t\tARQUIVO %s INEXISTENTE!", file_name);
+		getch();
+		exit(1);
+		return -1;
     } 
     fseek(fp, 0L, SEEK_END); 
     // calculating the size of the file 

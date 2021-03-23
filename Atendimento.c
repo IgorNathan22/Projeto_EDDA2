@@ -514,15 +514,15 @@ void reinicializarFila(fila * f)
    f->inicio = NULL;  
    f->fim = NULL;
 }
+
+
+
 /* ---------------------------------- CORPO DO PROGRAMA ------------------------------------ */
 int main ()
 {	
 	setlocale (LC_ALL, "");  
-	
-	//Testar quais suportes estao com vacina
-	
-  teste_heapsort();
- 
+  	teste_heapsort();
+
 	fila * F; 
 	Cidadao r;
 
