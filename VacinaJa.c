@@ -1,4 +1,3 @@
-#include "bibliotecas\\funcoes_gerais.h"
 #include "bibliotecas\\mensagens.h"
 
 FILE *arqDat;

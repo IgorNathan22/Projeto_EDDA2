@@ -1,3 +1,4 @@
+typedef  int   bool; 
 /* --------------------------------------- Bibliotecas -------------------------------------- */
 #include <stdio.h>
 #include <conio.h>
@@ -22,13 +23,6 @@ bool inserirElemPilha	(PILHA* p, SUPORTE reg);
 bool excluirElemPilha	(PILHA* p, SUPORTE *reg); 
 void reinicializarPilha (PILHA* p);
 void 		insereNaPilha 	(PILHA* p);
-
-typedef int 	bool;
-
-void inicializarPilha (PILHA* p)
-{
-  p->topo = NULL;
-}
 
 void geraDistribuicao (PILHA* p)
 {
@@ -65,7 +59,8 @@ void geraDistribuicao (PILHA* p)
 		   for ( i=reg_lote.qtd_frascos; i>0; i-- ) 
 	 	   {
 	 	   	//monta uma ocorrência de frasco ("tripinha")
-	 	   	r[i-1].id_vacina = reg_lote.id_vacina;
+	 	  strcpy(r[i-1].nome, reg_lote.nome);
+	 	  r[i-1].id_vacina = reg_lote.id_vacina;
 			r[i-1].id_frasco = i;
 			strcpy(r[i-1].id_lote, reg_lote.id_lote);
 		    //debug -> Frasco montado para ir para a pilha

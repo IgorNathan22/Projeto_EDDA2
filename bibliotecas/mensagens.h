@@ -39,18 +39,16 @@ void msg_sup_cheia (void) {
 	exit(1);
 }
 
-void msg_sup_vazio (void) {
+void msg_fila_vazia (void) {
 	system ("cls"); system ("color 40"); system ("mode 70,3");
-	printf("\n\t\tSUPORTES VAZIOS!");
+	printf("\n\t\tA FILA ESTÁ VAZIA!");
 	getch();
-	exit(1);
 }
 
 void msg_sem_vacina (void) {
 	system ("cls"); system ("color 40"); system ("mode 70,3");
 	printf("\n\t\tATENÇÃO! NÃO HÁ VACINAS DISPONÍVEIS!");
 	getch();
-	exit(1);
 }
 
 

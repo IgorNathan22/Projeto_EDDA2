@@ -18,6 +18,7 @@ long int       i, cont;
 
 typedef struct   
 {          
+	char nome[15+1];
   int 	id_vacina;
   char 	id_lote[8+1];
   int 	id_frasco;
@@ -71,12 +72,13 @@ typedef struct{
 }Cidadao;
 
 typedef struct {
+	char nome[15+1];
 	int 	id_vacina;
 	char 	id_lote[8+1];
 	int 	qtd_frascos;
 	char 	data_fab[10+1];
 	char 	data_ven[10+1];
-  	double 	ven_prox;
+  double 	ven_prox;
 } Registro_lote;
 
 int opcoes (int controle) {
@@ -136,6 +138,11 @@ long int findSize(char file_name[])
 /* --------------------------- FUNÇÕES DA PILHA ------------------------ */
 Registro_lote reg_lote;
 
+void inicializarPilha (PILHA* p)
+{
+  p->topo = NULL;
+}
+
 void exibirPilha (PILHA* p) 
 {  
    PONT end = p->topo;  
@@ -143,7 +150,7 @@ void exibirPilha (PILHA* p)
    printf("Pilha: \" ");  
    while (end != NULL) 
    {
-		printf("[%i-%s-%i]", end->reg.id_vacina, end->reg.id_lote, end->reg.id_frasco);  
+		printf("[%s - %i - %s - %i]", end->reg.nome, end->reg.id_vacina, end->reg.id_lote, end->reg.id_frasco);  
 		end = end->PROX;
    }
    printf("\"\n");
@@ -262,15 +269,15 @@ void consultaLote(void)
 	getch();
 }
 
-void consultaSuporte(void)  
+void consultaSuporte(char file_name[])  
 {
 	system ("cls"); system ("color 37"); system ("mode 80,25");
 
-	sup = fopen ("SUPORTE_1.DAT", "r");
+	sup = fopen (file_name, "rb+");
 	if (sup==NULL)
 	{
 		system ("cls");
-		printf ("\n  ERRO AO ABRIR ARQUIVO SUPORTE_1.DAT  ");
+		printf ("\n  ERRO AO ABRIR ARQUIVO .DAT  ");
 		getch();
 		exit(0);
 	}

@@ -1,3 +1,4 @@
+typedef  int   bool; 
 #include "bibliotecas\\funcoes_gerais.h"
 
 FILE *arqCsv;

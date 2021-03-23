@@ -1,4 +1,5 @@
 /* Bibliotecas */
+typedef  int   bool; 
 #include "bibliotecas\\funcoes_gerais.h"
 
 #define true 1
@@ -16,15 +17,6 @@ typedef struct
    char   arm[50+1];
 }
 registro_vacina;
-
-typedef struct {
-	int id_vacina;
-	char id_lote[8+1];
-	int qtd_frascos;
-	char data_fab[10+1];
-	char data_ven[10+1];
-  double ven_prox;
-} Registro_lote;
 
 /* Variáveis globais */
 
@@ -80,7 +72,7 @@ int cadastraLote() {
 		printf("\n Não existe vacina com esse id!");
 		printf("\n\n Id da vacina: "); scanf("%d", &reg_lote.id_vacina);
 	}
-
+	printf("\nNome da vacina: "); fflush(stdin); gets(reg_lote.nome);
 	printf("\nId do lote: "); fflush(stdin); gets(reg_lote.id_lote);
 
 	printf("\nQuantidade de frascos: "); scanf("%d", &reg_lote.qtd_frascos);
@@ -206,49 +198,15 @@ void consultaVacina() {
 	getch();
 }
 
-void consultaLote() {
-	system ("cls"); system ("color 37"); system ("mode 80,25");
-
-	DAT = fopen ("LOTESVACINA.DAT", "r");
-	if (DAT==NULL)
-	{
-		system ("cls");
-		printf ("\n  ERRO AO ABRIR ARQUIVO LOTESVACINA.DAT  ");
-		getch();
-		exit(0);
-	}
-
-	printf ("__________________________________________________________________________");
-		printf ("\n\n%s %-10s %-10s %-12s %-12s", "ID", "LOTE", "FRASCOS", "DATA_FAB", "DATA_VENC");
-	printf ("\n________________________________________________________________________");
-	while ( !feof(DAT) )
-	{
-		/* lê o DAT */
-		fread (&reg_lote, sizeof(reg_lote), 1, DAT);
-		if ( ferror(DAT) )
-		{
-			system ("cls");
-			printf ("\n  ERRO AO LER ARQUIVO LOTESVACINA.DAT  ");
-			getch();
-			exit(0);
-		}
-		if (feof(DAT)) break;
-		/* Mostra registro lido */
-		printf ("\n %i %-10s %i\t %-12s %-12s", reg_lote.id_vacina, reg_lote.id_lote, reg_lote.qtd_frascos, reg_lote.data_fab, reg_lote.data_ven);
-	}
-	fclose (DAT);
-	getch();
-}
-
 void cadastraLoteDefault() {
 	Registro_lote reg_lote[MAX_LOTE_DEFAULT] =
 	{
-   {1, "20210001", 50, "10/01/2021", "05/01/2022",2022.09703},
-   {1, "20210002", 50, "11/03/2021", "06/03/2022",2022.26644},
-   {2, "20200001", 50, "16/12/2020", "11/12/2021",2022.03014},
-   {3, "21210001", 25, "15/03/2021", "10/03/2022",2022.2774},
-   {4, "21210001", 25, "14/05/2021", "09/05/2022",2022.44132},
-   {5, "20200001", 50, "15/12/2020", "10/12/2021",2022.0274},
+   {"CoronaVac", 1, "20210001", 50, "10/01/2021", "05/01/2022",2022.09703},
+   {"CoronaVac",1, "20210002", 50, "11/03/2021", "06/03/2022",2022.26644},
+   {"Covishield", 2, "20200001", 50, "16/12/2020", "11/12/2021",2022.03014},
+   {"mRNA-1273", 3, "21210001", 25, "15/03/2021", "10/03/2022",2022.2774},
+   {"mRNA BNT162b2", 4, "21210001", 25, "14/05/2021", "09/05/2022",2022.44132},
+   {"Sputnik V", 5, "20200001", 50, "15/12/2020", "10/12/2021",2022.0274},
 	};
 	
 	

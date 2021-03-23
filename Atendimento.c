@@ -7,6 +7,7 @@ typedef  int   bool;
 #include <malloc.h>
 #include <windows.h>
 #include <locale.h>
+#include <time.h>
 #include "bibliotecas\\funcoes_gerais.h"
 #include "bibliotecas\\mensagens.h"
 
@@ -16,6 +17,8 @@ long int     qtd_registros;
 /* Fila */
 #define  true  1      
 #define false -1
+
+void consultaFila(void);
 
 /* Definindo o ELEMENTO */
 typedef struct auxC
@@ -36,16 +39,71 @@ typedef struct
 fila;
 
 /* ------------------------------------ PILHA ----------------------------- */
-suporteMemoria(char file_name[]) {
-	printf("ok");
-}
-
 int verificaVacina(char file_name[]) {
-	SUPORTE sup;
-	FILE *DAT = fopen (file_name, "r");
-	int tamanho = ((int) findSize(file_name) ) /sizeof(sup);
+	SUPORTE suporte;
+	FILE *DAT = fopen (file_name, "rb+");
+	if(DAT==NULL) {
+		return 0;
+	}
+	int tamanho = ((int) findSize(file_name) ) /sizeof(suporte);
 	fclose(DAT);
 	return tamanho;
+}
+
+void suporteMemoria(char file_name[], PILHA *p, fila * f) {
+	SUPORTE suporte;
+	FILE *DAT = fopen (file_name, "rb+");
+	if (DAT==NULL)
+	{
+		system ("cls");
+		printf ("\n  ERRO AO ABRIR ARQUIVO %s", file_name);
+		getch();
+		exit(0);
+	}
+	
+	while (!feof(DAT))
+	{
+		/* lê o DAT */
+		fread (&suporte, sizeof(suporte), 1, DAT);
+		if ( ferror(DAT) )
+		{
+			system ("cls");
+			printf ("\n  ERRO AO LER ARQUIVO %s.DAT  ", file_name);
+			getch();
+			exit(0);
+		}
+		
+		if (feof(DAT)) break; 
+
+    if ( inserirElemPilha(p, suporte) == true ) {
+			
+    }else
+			printf("Vacina %i - %s - %i não colocado!", suporte.id_frasco, suporte.nome, suporte.id_lote);
+	  }
+	   
+	fclose (DAT);
+}
+
+void atualizaArquivos(fila *f, PILHA *p, char file_name[]) {
+	
+	FILE *DATP = fopen(file_name, "wb+");
+	FILE *DATM = fopen("MUNICIPES.DAT", "wb+");
+	
+	while (estaVazia(p) != true) {
+		excluiDaPilha(p, DATP);
+	}
+	fclose(DATP);
+	
+	FILE *DATF = fopen("FILAVACINA.DAT", "wb+");
+	
+	while (estaVaziaF(f) != true) {
+		filaMunicipeNoDat(f, DATF, DATM);
+	}
+	fclose(DATF);
+	fclose(DATM);
+	
+	consultaFila();
+	consultaSuporte(file_name);
 }
 /* ------------------------------------ HEAP SORT ------------------------- */
 int esquerdo(int i) 
@@ -240,8 +298,6 @@ void    abastece_vetor (Cidadao	* vet_reg)
 		if (feof(ArqDat)) break;
 	}
     fclose(ArqDat);
-//	printf ("\nArquivo MUNICIPES.DAT transferido para vetor em memória com sucesso!");
-//	Sleep(2000);
 }
 
 void mostra_codigos  (Cidadao	* vet_reg)
@@ -280,7 +336,6 @@ void envia_vet_ordenado_dat (Cidadao	* vet_reg)
 		}
 	}
 	fclose(ArqDat);
-//	printf ("\nMUNICIPES.DAT ordenado com sucesso!");
 }
 
 void teste_heapsort(void)
@@ -293,39 +348,18 @@ void teste_heapsort(void)
     system ("cls"); system ("mode 160, 1000"); 
 	if (TAMANHO_VETOR != -1) 
 	{
-//	    printf("Tamanho do arquivo MUNICIPES.DAT em bytes = %ld e tem %ld registros\n", 
-//	          TAMANHO_VETOR, qtd_registros );
-//        Sleep(2000);
     } 
     vet_reg = (Cidadao *) malloc (qtd_registros * sizeof (Cidadao)); 
     if (vet_reg == NULL)
     {
         printf ("malloc devolveu NULL!\nNão foi possível alocar %ld bytes.", 
 		(qtd_registros * sizeof (Cidadao)) );
-//        getch();
         exit (EXIT_FAILURE);
     }
-//    else
-//    {
-//      printf ("\nAlocação de memória bem-sucedida!");
-//    	printf ("\nmalloc alocou %ld bytes", (qtd_registros * sizeof (Cidadao)) );
-//    	printf ("\nO arquivo MUNICIPES.DAT possui %ld bytes", TAMANHO_VETOR);
-//    	printf ("\nO arquivo MUNICIPES.DAT possui %ld registros", qtd_registros);
-//    	Sleep(2000);
-//	}
-    
     abastece_vetor(vet_reg);  		
-//    printf ("\nExibindo o conteúdo do vetor...\n");
-//    mostra_codigos(vet_reg);  	
-	BuildHeap (vet_reg);      	
-//	printf ("\nExibindo o heap de máximo construído...\n");
-//    mostra_codigos(vet_reg);  
-//    getch();
-//	heap_sort(vet_reg);    
-//    printf ("\nExibindo o vetor ordenado...\n");
-//	mostra_codigos(vet_reg);  
 
-//	printf ("\nTransferindo o vetor ordenado para MUNICIPES.DAT...");
+	BuildHeap (vet_reg);      	
+
 	envia_vet_ordenado_dat (vet_reg);
     consulta_dat_em_relatorio();
 }
@@ -430,10 +464,31 @@ bool filaNoDat(fila * f, FILE *DAT) {
 	   
 	fwrite(&regExcluido, sizeof(regExcluido),1, DAT);
 		
-	 if ( ferror(DAT) ){
+	if ( ferror(DAT) ){
 		printf("\nErro de gravação no lote!\n");
 		getch();
 		fclose(DAT);
+	}
+	   
+	} else {
+	   return false;
+	 }
+	 return true;
+}
+
+bool filaMunicipeNoDat(fila * f, FILE *DAT, FILE *DATM) {
+	Cidadao regExcluido;
+	
+	if ( excluiDaFila(f, &regExcluido) == true ) {
+	   
+	fwrite(&regExcluido, sizeof(regExcluido),1, DAT);
+	fwrite(&regExcluido, sizeof(regExcluido),1, DATM);
+		
+	if ( ferror(DAT) || ferror(DATM) ){
+		printf("\nErro de gravação no lote!\n");
+		getch();
+		fclose(DAT);
+		fclose(DATM);
 	}
 	   
 	} else {
@@ -478,7 +533,7 @@ void consultaFila(void) {
 		if ( ferror(DAT) )
 		{
 			system ("cls");
-			printf ("\n  ERRO AO LER ARQUIVO LOTESVACINA.DAT  ");
+			printf ("\n  ERRO AO LER ARQUIVO FILAVACINA.DAT  ");
 			getch();
 			exit(0);
 		}
@@ -490,26 +545,45 @@ void consultaFila(void) {
 	getch();
 }
 
-void removerFilaExibir(fila * f) {
+void removerFilaExibir(fila * f, PILHA * p, char file_name[]) {
+	
+	time_t t = time(NULL);
+  struct tm tm = *localtime(&t);
+	
 	Cidadao regExcluido;
-	FILE * VAC;
+	SUPORTE supExcluido;
+	
 	int tamanho = ((int) findSize("FILAVACINA.DAT") ) /sizeof(regExcluido);
-	int i = 0;
+	int i = 1;
 	
 	
 	while(estaVaziaF(f) != true) {
 		
-		if ( excluiDaFila(f, &regExcluido) == true ) {
+		if ( excluiDaFila(f, &regExcluido) == true && excluirElemPilha(p, &supExcluido)) {
 			system("cls"); system("mode 73,15");
 			printf("\n\t\t\t    ATENDIMENTO");
 			printf("\n________________________________________________________________________");
 			printf("\n\n  NOME: %-50s", regExcluido.nome);
 			printf("[%i/%i]", i, tamanho);
 			printf("\n\n  CPF: %s", regExcluido.cpf);
+			printf("\n\n  %s [Lote: %s/Frasco: %i]", supExcluido.nome, supExcluido.id_lote, supExcluido.id_frasco);
+			printf("\n\n  Primeira dose: %02d/%02d/%d", tm.tm_mday, tm.tm_mon +1, tm.tm_year + 1900);
+		}	printf("\n\n  Segunda dose:  %02d/%02d/%d", tm.tm_mday, tm.tm_mon +2, tm.tm_year + 1900);
+		getch();
+		
+		if(estaVazia(p) == true) {
+			msg_sem_vacina();
+			break;
 		}
 		i++;
-		getch();
 	}	
+	
+	if(estaVaziaF(f) == true) {
+		msg_fila_vazia();
+	}
+	
+	atualizaArquivos(f, p, file_name);
+
 }
 
 void reinicializarFila(fila * f) 
@@ -526,13 +600,10 @@ void reinicializarFila(fila * f)
    f->fim = NULL;
 }
 
-void HeapFila(fila * F) {
+void HeapFila(fila * F, PILHA * pil, char file_name[]) {
 	DAT = fopen ("MUNICIPES.DAT", "rb+");
 	inserirNaFila(F, DAT);
 	fclose(DAT);
-	
-//	exibirfila(F);
-//	getch();
 	
 	DAT = fopen("FILAVACINA.DAT", "wb+");
 	
@@ -541,60 +612,68 @@ void HeapFila(fila * F) {
 	}
 	
 	fclose(DAT);
-//	getch();
-	
-//	exibirfila(F);
-//	getch();
-//	consultaFila();
-//	exibirfila(F);
-//	getch();
 	
 	DAT = fopen("FILAVACINA.DAT", "rb+");
 	inserirNaFila(F, DAT);
 	fclose(DAT);
 	
-//	exibirfila(F);
-	
-//	getch();
-	
-	removerFilaExibir(F);
-	getch();
+	removerFilaExibir(F, pil, file_name);
 }
 
 /* ---------------------------------- CORPO DO PROGRAMA ------------------------------------ */
 int main ()
 {	
 	setlocale (LC_ALL, "");  
-//  teste_heapsort();
-//
-//	fila * F; 
-//	Cidadao r;
-//
-//	F = (fila *) malloc (sizeof (fila));
-//	if (F == NULL) {
-//	printf("Malloc devolveu NULL\n");
-//	getch();
-//	exit (EXIT_FAILURE);
-//	}
-//	
-//	inicializarfila(F);
-//	HeapFila(F);
+	
+	/* PILHA */
+	PILHA *pil; 
+	pil = (PILHA *)malloc(sizeof(PILHA));
+	inicializarPilha (pil);
+	
+	if (pil==NULL )
+	{
+		printf ("\nErro ao alocar pilha! (pil=%p)", pil);
+		getch();
+		exit(0);
+	}	
+	
+	/* HEAP E FILA */
+	teste_heapsort();
+
+	fila * F; 
+	Cidadao r;
+
+	F = (fila *) malloc (sizeof (fila));
+	if (F == NULL) {
+	printf("Malloc devolveu NULL\n");
+	getch();
+	exit (EXIT_FAILURE);
+	}
+	
+	inicializarfila(F);
 	
 	if(verificaVacina("SUPORTE_1.DAT") > 0) {
-		suporteMemoria("SUPORTE_1.DAT");
+		suporteMemoria("SUPORTE_1.DAT", pil, F);
+		HeapFila(F, pil, "SUPORTE_1.DAT");
+		
 	} else if (verificaVacina("SUPORTE_2.DAT") > 0) {
-		suporteMemoria("SUPORTE_2.DAT");
+		suporteMemoria("SUPORTE_2.DAT", pil, F);
+		HeapFila(F, pil, "SUPORTE_2.DAT");
+		
 	} else if (verificaVacina("SUPORTE_3.DAT") > 0) {
-		suporteMemoria("SUPORTE_3.DAT");
+		suporteMemoria("SUPORTE_3.DAT", pil, F);
+		HeapFila(F, pil, "SUPORTE_3.DAT");
+		
 	} else if (verificaVacina("SUPORTE_4.DAT") > 0) {
-		suporteMemoria("SUPORTE_4.DAT");
+		suporteMemoria("SUPORTE_4.DAT", pil, F);
+		HeapFila(F, pil, "SUPORTE_4.DAT");
+		
 	} else if (verificaVacina("SUPORTE_5.DAT") > 0) {
-		suporteMemoria("SUPORTE_5.DAT");
+		suporteMemoria("SUPORTE_5.DAT", pil, F);
+		HeapFila(F, pil, "SUPORTE_5.DAT");
 	} else {
 		msg_sem_vacina();
 	}
-	
-
 	
  	return 0;
 } 
