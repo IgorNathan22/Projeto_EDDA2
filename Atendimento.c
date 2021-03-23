@@ -7,6 +7,7 @@
 #include <windows.h>
 #include <locale.h>
 #include "bibliotecas\\funcoes_gerais.h"
+#include "bibliotecas\\mensagens.h"
 
 /* ------------------------------------ HEAP SORTE ------------------------- */
 /* variáveis globais */
@@ -521,6 +522,9 @@ void reinicializarFila(fila * f)
 int main ()
 {	
 	setlocale (LC_ALL, "");  
+	
+	//Testar quais suportes estao com vacina
+	
   teste_heapsort();
  
 	fila * F; 

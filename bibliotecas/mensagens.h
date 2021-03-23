@@ -46,4 +46,11 @@ void msg_sup_vazio (void) {
 	exit(1);
 }
 
+void msg_sem_vacina (void) {
+	system ("cls"); system ("color 40"); system ("mode 70,3");
+	printf("\n\t\tATENÇÃO! NÃO HÁ VACINAS DISPONÍVEIS!");
+	getch();
+	exit(1);
+}
+
 
