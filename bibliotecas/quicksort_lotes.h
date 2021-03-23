@@ -114,9 +114,9 @@ void envia_vet_ordenado_dat (Registro_lote	* vetorlote)
 		}
 	}
 	fclose(arqDat);
-	printf ("\nLOTESVACINA.DAT ordenado com sucesso!");
+//	printf ("\nLOTESVACINA.DAT ordenado com sucesso!");
 	free(vetorlote);
-	getch();
+//	getch();
 }
 
 
