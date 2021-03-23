@@ -521,7 +521,7 @@ void reinicializarFila(fila * f)
 int main ()
 {	
 	setlocale (LC_ALL, "");  
-  teste_heapsort();
+  	teste_heapsort();
  
 	fila * F; 
 	Cidadao r;

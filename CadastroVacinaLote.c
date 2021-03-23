@@ -1,9 +1,4 @@
 /* Bibliotecas */
-#include <stdio.h>
-#include <stdlib.h>
-#include <conio.h>
-#include <string.h>
-#include <locale.h>
 #include "bibliotecas\\funcoes_gerais.h"
 
 #define true 1
@@ -313,7 +308,8 @@ int main()
 		printf("\n\t\t3. Consulta vacinas");
 		printf("\n\t\t4. Cadastro lotes");
 		printf("\n\t\t5. Consulta lotes");
-		printf("\n\t\t0. ENCERRAR (acondiciona nos suportes)");
+		printf("\n\t\t6. Adicionar frascos no suporte"); // IGOR: ADICIONEI ESTA LINHA E MODIFIQUEI O SWITCH CASE PARA ENCERRAR NO 0, N MEXI NAS FUNCOES
+		printf("\n\t\t0. ENCERRAR");
 		printf("\n\n\t\t Opção desejada: ");
 		scanf("%i", &resp);
 
@@ -323,7 +319,8 @@ int main()
 			case 3: consultaVacina(); break;
 			case 4: cadastraLote(); break;
 			case 5: consultaLote(); break;
-			case 0: acondicionaFrascos(); break;
+			case 6: acondicionaFrascos(); break;
+			case 0: resp = 0;
 		}
 
 	} while(resp != 0);
