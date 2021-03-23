@@ -1,23 +1,17 @@
+typedef int bool;
+
 #include "funcoes_gerais.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 #define TAMANHO_SUPORTE 250
-
 FILE * arqDat;
 
-typedef struct {
-	int 	id_vacina;
-	char 	id_lote[8+1];
-	int 	qtd_frascos;
-	char 	data_fab[10+1];
-	char 	data_ven[10+1];
-  	double 	ven_prox;
-} Registro_lote;
-
 Registro_lote lote;
+
 int tamanhovetor;
 int qntregistros;
+
 void envia_vet_ordenado_dat(Registro_lote * vetorlote);
 
 void troca (Registro_lote *A, Registro_lote *B) 

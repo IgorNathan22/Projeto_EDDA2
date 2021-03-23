@@ -6,52 +6,13 @@
 #include <malloc.h>
 #include <windows.h>
 #include "bibliotecas\\quicksort_lotes.h"
+
 /* ------------------------------- Constantes pr?-definidas --------------------------------- */
 #define MAX       2  /* tamanho m?ximo do vetor est?tico */ 
 #define INVALIDO -1
 
 #define false    -1  
 #define true      1
-
-/* --------------------- Tipos de dados definidos pelo programador -------------------------- */
-
-/* defini??o do tipo booleano */
-typedef int 	bool;
-/* defini??o do tipo chave utilizado:  a chave da nossa implementa??o ser? um n?mero inteiro */
-
-/* defini??o do registro*/
-
-FILE *lotes;
-FILE *sup;
-FILE *sup2;
-FILE *sup3;
-FILE *sup4;
-FILE *sup5;
-
-typedef struct   
-{          
-  int 	id_vacina;
-  char 	id_lote[8+1];
-  int 	id_frasco;
-} 
-SUPORTE;
-
-SUPORTE sups;
-
-typedef struct aux
-{  
-	SUPORTE 	reg;
-	struct 		aux	* PROX; /* prox APONTA para o endere?o de mem?ria  */
-}                           /* de um elemento com essa mesma estrutura */
-ELEMENTO;
-
-typedef ELEMENTO * PONT;  
-
-typedef struct 
-{
-	PONT topo; /* topo APONTA para o endere?o do ELEMENTO do TOPO da PILHA */
-} 
-PILHA;
 
 /* --------------------------- Prot?tipos das fun??es --------------------------------------- */
 void inicializarPilha 	(PILHA* p);
@@ -60,247 +21,13 @@ void exibirPilha 		(PILHA* p);
 bool inserirElemPilha	(PILHA* p, SUPORTE reg);
 bool excluirElemPilha	(PILHA* p, SUPORTE *reg); 
 void reinicializarPilha (PILHA* p);
-
 void 		insereNaPilha 	(PILHA* p);
-//void 		excluiDaPilha 	(PILHA* p);
 
-/* ----------------------- Rotinas de gerenciamento da Pilha -------------------------------- */
+typedef int 	bool;
 
-/* 
-Para inicializar uma pilha j? criada pelo usu?rio,  precisamos apenas acertar o valor do 
-campo topo.
-J? que o topo conter? o endere?o do elemento que est? no topo da pilha e apilha est? vazia,  
-iniciaremos esse campo com valor NULL. 
-*/
 void inicializarPilha (PILHA* p)
 {
   p->topo = NULL;
-}
-
-/* J? que n?o temos um campo com o n?mero de elementos na pilha, 
-   precisaremos percorrer todos os elementos para contar quantos s?o.
-*/
-int tamanho (PILHA* p) 
-{  
-   PONT end = p->topo;  
-   int tam = 0;
-   while (end != NULL) 
-   {  
-      tam++;
-      end = end->PROX;
-   }  
-   return tam;
-}
-
-/* Se topo est?  armazenando o endere?o NULL, significa que a pilha est? vazia. */
-bool estaVazia(PILHA* p) 
-{
-   if (p->topo == NULL) 
-      return true;  
-   return false;
-}
-
-/* Para exibir os elementos da estrutura precisaremos  percorrer os elementos
-(iniciando pelo elemento do topo da pilha) e, por exemplo, imprimir suas chaves. */
-void exibirPilha (PILHA* p) 
-{  
-   PONT end = p->topo;  
-   system ("cls");
-   printf("Pilha: \" ");  
-   while (end != NULL) 
-   {
-		printf("[%i-%s-%i]", end->reg.id_vacina, end->reg.id_lote, end->reg.id_frasco);  
-		end = end->PROX;
-   }
-   printf("\"\n");
-   getch();
-}
-
-/* 
-Inser??o de um elemento (push)
-O usu?rio passa como par?metro um registro a ser inserido na pilha
-O elemento ser? inserido no topo da pilha, ou  melhor, 
-?acima? do elemento que est? no topo da  pilha.
-O novo elemento ir? apontar para o elemento que estava no topo da pilha
-*/
-bool inserirElemPilha(PILHA* p, SUPORTE reg) 
-{  
-   PONT novo  = (PONT) malloc(sizeof(ELEMENTO));  
-   novo->reg  = reg;
-   novo->PROX = p->topo;  
-   p->topo    = novo;  
-   return true;
-}
-
-/*
-Exclus?o de um elemento (pop)
-O usu?rio solicita a exclus?o do elemento do topo da pilha:
-Se a pilha n?o estiver vazia, al?m de excluir esse elemento da pilha 
-iremos copi?-lo para um local indicado pelo usu?rio.
-*/
-//bool excluirElemPilha(PILHA* p, SUPORTE* reg) 
-//{  
-//
-//	SUPORTE sups;
-//	sup = fopen ("SUPORTE_1.DAT", "w");
-//	
-//	for (i = 0; i<tamanho(p); i++) {
-////		if ( p->topo == NULL) 
-////		    return false;
-//		 *reg        = p->topo->reg;  
-//		 
-//		 sups.id_frasco = reg->id_frasco;
-//		 strcpy(sups.id_lote, reg->id_lote);
-//		 sups.id_vacina = reg->id_vacina;
-//		 fwrite(&sups, sizeof(sups),1,sup);
-//		 
-//		 printf("\n%i",tamanho(p));
-//		 printf("\n[%i\t%s\t%i]", sups.id_vacina, sups.id_lote, sups.id_frasco);
-//		 getch();
-//		 
-//		 PONT apagar = p->topo;
-//		 p->topo     = apagar->PROX; 
-//		 
-//		 
-//		 
-//		 free(apagar);
-//	}
-//	 fclose(sup);
-//	 return true;
-//}
-
-bool excluirElemPilha(PILHA* p, SUPORTE* reg) 
-{  
-   if ( p->topo == NULL) 
-      return false;
-   *reg        = p->topo->reg;  
-   PONT apagar = p->topo;
-   p->topo     = apagar->PROX; 
-   free(apagar);
-   return true;
-}
-
-bool excluiDaPilha (PILHA* p, FILE *sup)
-{	SUPORTE regExcluido;
-	
- 	if ( excluirElemPilha(p, &regExcluido) == true ) {
-//	   printf("\n[%i\t%s\t%i]", regExcluido.id_vacina, regExcluido.id_lote, regExcluido.id_frasco);
-	   
-		 fwrite(&regExcluido, sizeof(regExcluido),1, sup);
-		 
-		 if ( ferror(sup) ){
-			printf("\nErro de gravação no lote!\n");
-			getch();
-			fclose(sup);
-		}
-	   
-	} else {
-//	   printf ("\nNao foi possivel excluir o registro.");
-	   return false;
-	 }
-	 
-	 return true;
-}
-
-/* 
-S? tem sentido, se a pilha foi inicializada alguma vez.
-Para reinicializar a pilha, precisamos excluir todos os seus elementos 
-e colocar NULL no campo topo 
-*/
-void reinicializarPilha (PILHA* p) 
-{  
-   PONT apagar;
-   PONT posicao = p->topo;  
-   while (posicao != NULL) 
-   {
-      apagar  = posicao;  
-      posicao = posicao->PROX;  
-      free(apagar);
-   }
-   p->topo = NULL;
-}
-/*------------------*/
-/* Fun??es de apoio */
-/*------------------*/
-
-Registro_lote reg_lote;
-
-//void excluiDaPilha (PILHA* p)
-//{	SUPORTE regExcluido;
-// 	if ( excluirElemPilha(p, &regExcluido) == true )
-//	   printf ("\nRegistro: [%i-%s-%i] excluido com sucesso.", regExcluido.id_vacina, regExcluido.id_lote, regExcluido.id_frasco );
-//	else
-//	   printf ("\nNao foi possivel excluir o registro.");
-//}
-
-void consultaLote(void) 
-{
-	system ("cls"); system ("color 37"); system ("mode 80,25");
-
-	FILE *DAT = fopen ("LOTESVACINA.DAT", "r");
-	if (DAT==NULL)
-	{
-		system ("cls");
-		printf ("\n  ERRO AO ABRIR ARQUIVO LOTESVACINA.DAT  ");
-		getch();
-		exit(0);
-	}
-
-	printf ("__________________________________________________________________________");
-	printf ("\n\n%s %-10s %-10s %-12s %-12s %-12s", "ID", "LOTE", "FRASCOS", "DATA_FAB", "DATA_VENC", "ANOS_VENC" );
-	printf ("\n________________________________________________________________________");
-	while ( !feof(DAT) )
-	{
-		/* lê o DAT */
-		fread (&reg_lote, sizeof(reg_lote), 1, DAT);
-		if ( ferror(DAT) )
-		{
-			system ("cls");
-			printf ("\n  ERRO AO LER ARQUIVO LOTESVACINA.DAT  ");
-			getch();
-			exit(0);
-		}
-		if (feof(DAT)) break;
-		/* Mostra registro lido */
-		printf ("\n %i %-10s %i\t %-12s %-12s %f", reg_lote.id_vacina, reg_lote.id_lote, reg_lote.qtd_frascos, reg_lote.data_fab, reg_lote.data_ven, reg_lote.ven_prox);
-	}
-	fclose (DAT);
-	getch();
-}
-
-void consultaSuporte(void)  
-{
-	system ("cls"); system ("color 37"); system ("mode 80,25");
-
-	sup = fopen ("SUPORTE_1.DAT", "r");
-	if (sup==NULL)
-	{
-		system ("cls");
-		printf ("\n  ERRO AO ABRIR ARQUIVO SUPORTE_1.DAT  ");
-		getch();
-		exit(0);
-	}
-
-	printf ("__________________________________________________________________________");
-	printf ("\n\n%s %-10s %-10s", "ID", "LOTE", "VACINA" );
-	printf ("\n________________________________________________________________________");
-	while ( !feof(sup) )
-	{
-		/* lê o DAT */
-		fread (&sups, sizeof(sups), 1, sup);
-		if ( ferror(sup) )
-		{
-			system ("cls");
-			printf ("\n  ERRO AO LER ARQUIVO SUPORTE_1.DAT  ");
-			getch();
-			exit(0);
-		}
-		if (feof(sup)) break;
-		/* Mostra registro lido */
-		printf ("\n %i %-10s %i", sups.id_frasco, sups.id_lote, sups.id_vacina);
-	}
-	fclose (sup);
-	getch();
 }
 
 void geraDistribuicao (PILHA* p)
@@ -347,7 +74,7 @@ void geraDistribuicao (PILHA* p)
 		    //insere frasco na pilha
 	        if ( inserirElemPilha(p, r[i-1]) == true ) {
 //	          printf ("\nFrasco [%i-%s-%i] inserido com sucesso.", 
-			  r[i-1].id_vacina, r[i-1].id_lote, r[i-1].id_frasco);
+//			  r[i-1].id_vacina, r[i-1].id_lote, r[i-1].id_frasco);
 	        }else
 	          printf ("\nFrasco [%i] NAO inserido!", r[i-1].id_frasco );
 		   }
@@ -365,10 +92,6 @@ void consulta_dat_em_relatorio1()
 	SUPORTE				suporte;
 	long int 			cont=0;
 	int 				qtd_registros;
-//	char nome_original[14];
-//	strcpy(nome_original, nome_arquivo);
-//	char dat[] = ".dat";
-//	char txt[] = ".txt";
 	
 	system ("cls"); system ("mode 170,50");
 
@@ -401,11 +124,7 @@ void consulta_dat_em_relatorio1()
 	
 	while ( !feof(ArqDat) )
 	{
-		// Limpa o registro 
-		/*
-		memset(suporte.Municipio,       '\0', sizeof(reg.Municipio));
-		memset(reg.Nome_Escola,     '\0', sizeof(reg.Nome_Escola));
-		reg.PK_COD_ENTIDADE = 0;*/
+
 		cont++;
 		fread (&suporte, sizeof(suporte), 1, ArqDat);
 				
@@ -426,10 +145,6 @@ void consulta_dat_em_relatorio2()
 	SUPORTE				suporte;
 	long int 			cont=0;
 	int 				qtd_registros;
-//	char nome_original[14];
-//	strcpy(nome_original, nome_arquivo);
-//	char dat[] = ".dat";
-//	char txt[] = ".txt";
 	
 	system ("cls"); system ("mode 170,50");
 
@@ -462,11 +177,7 @@ void consulta_dat_em_relatorio2()
 	
 	while ( !feof(ArqDat) )
 	{
-		// Limpa o registro 
-		/*
-		memset(suporte.Municipio,       '\0', sizeof(reg.Municipio));
-		memset(reg.Nome_Escola,     '\0', sizeof(reg.Nome_Escola));
-		reg.PK_COD_ENTIDADE = 0;*/
+
 		cont++;
 		fread (&suporte, sizeof(suporte), 1, ArqDat);
 				
@@ -487,10 +198,6 @@ void consulta_dat_em_relatorio3()
 	SUPORTE				suporte;
 	long int 			cont=0;
 	int 				qtd_registros;
-//	char nome_original[14];
-//	strcpy(nome_original, nome_arquivo);
-//	char dat[] = ".dat";
-//	char txt[] = ".txt";
 	
 	system ("cls"); system ("mode 170,50");
 
@@ -523,11 +230,6 @@ void consulta_dat_em_relatorio3()
 	
 	while ( !feof(ArqDat) )
 	{
-		// Limpa o registro 
-		/*
-		memset(suporte.Municipio,       '\0', sizeof(reg.Municipio));
-		memset(reg.Nome_Escola,     '\0', sizeof(reg.Nome_Escola));
-		reg.PK_COD_ENTIDADE = 0;*/
 		cont++;
 		fread (&suporte, sizeof(suporte), 1, ArqDat);
 				
@@ -548,10 +250,6 @@ void consulta_dat_em_relatorio4()
 	SUPORTE				suporte;
 	long int 			cont=0;
 	int 				qtd_registros;
-//	char nome_original[14];
-//	strcpy(nome_original, nome_arquivo);
-//	char dat[] = ".dat";
-//	char txt[] = ".txt";
 	
 	system ("cls"); system ("mode 170,50");
 
@@ -584,11 +282,6 @@ void consulta_dat_em_relatorio4()
 	
 	while ( !feof(ArqDat) )
 	{
-		// Limpa o registro 
-		/*
-		memset(suporte.Municipio,       '\0', sizeof(reg.Municipio));
-		memset(reg.Nome_Escola,     '\0', sizeof(reg.Nome_Escola));
-		reg.PK_COD_ENTIDADE = 0;*/
 		cont++;
 		fread (&suporte, sizeof(suporte), 1, ArqDat);
 				
@@ -609,10 +302,6 @@ void consulta_dat_em_relatorio5()
 	SUPORTE				suporte;
 	long int 			cont=0;
 	int 				qtd_registros;
-//	char nome_original[14];
-//	strcpy(nome_original, nome_arquivo);
-//	char dat[] = ".dat";
-//	char txt[] = ".txt";
 	
 	system ("cls"); system ("mode 170,50");
 
@@ -645,11 +334,6 @@ void consulta_dat_em_relatorio5()
 	
 	while ( !feof(ArqDat) )
 	{
-		// Limpa o registro 
-		/*
-		memset(suporte.Municipio,       '\0', sizeof(reg.Municipio));
-		memset(reg.Nome_Escola,     '\0', sizeof(reg.Nome_Escola));
-		reg.PK_COD_ENTIDADE = 0;*/
 		cont++;
 		fread (&suporte, sizeof(suporte), 1, ArqDat);
 				
@@ -695,8 +379,6 @@ int main ()
    sup4 = fopen ("SUPORTE_4.dat", "wb+");
    sup5 = fopen ("SUPORTE_5.dat", "wb+");
    
-   // Exclui da pilha e coloca no DAT
-//   printf("\nTAMANHO: %i", tamanho(pil));
 //   getch();
 	 for (i= tamanho(pil); i>0; i--) {
 	 	
