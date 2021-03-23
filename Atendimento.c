@@ -9,22 +9,22 @@
 #include "bibliotecas\\funcoes_gerais.h"
 #include "bibliotecas\\mensagens.h"
 
-/* ------------------------------------ HEAP SORTE ------------------------- */
+/* ------------------------------------ HEAP SORT ------------------------- */
 /* variáveis globais */
 long int     TAMANHO_VETOR;
 long int     qtd_registros;
 /* Fila */
-#define  true  1      /* apoio para uso nas funções */ 
+#define  true  1      
 #define false -1
-typedef  int   bool;  /* apoio para uso nas funções */ 
+typedef  int   bool; 
 
 
 /* Definindo o ELEMENTO */
 typedef struct aux
 {  
    Cidadao reg;
-   struct 	    aux * PROX;  /* prox APONTA para o endereço de memória  */
-}                                            /* de um elemento com essa mesma estrutura */
+   struct 	    aux * PROX; 
+}                                            
 ELEMENTO;
 
 /* Definindo a fila */
@@ -32,12 +32,10 @@ typedef ELEMENTO  *PONT;
 
 typedef struct 
 {
-   PONT inicio;    /* inicio APONTA para o endereço do primeiro ELEMENTO da fila */
-   PONT fim;       /* fim APONTA para o endereço do último ELEMENTO da fila */
+   PONT inicio;   
+   PONT fim;       
 } 
 fila;
-
-/* Funções */
 
 /*------------------Funções específicas para o teste de ordenação: heapsort -----------------*/
 int esquerdo(int i) 
@@ -65,14 +63,14 @@ void troca (Cidadao *A, Cidadao *B)
 void BuildHeap (Cidadao	* vet_reg)
 {
    long int i, atual;
-   for(i=1; i<qtd_registros; i++) /* percorre todo o vetor (o vetor tem qtd_registros) */
+   for(i=1; i<qtd_registros; i++) 
    {
       atual = i;
-      /* enquanto o atual for maior que o pai...*/
+      
       while(atual > 0 && vet_reg[atual].idade > vet_reg[pai(atual)].idade) 
       {
-      	troca(  &vet_reg[atual], &vet_reg[pai(atual)] ); /*...troca o atual com o pai... */
-        atual = pai(atual); /*...e acompanha o atual (que ficou no lugar do pai) */
+      	troca(  &vet_reg[atual], &vet_reg[pai(atual)] );
+        atual = pai(atual);
       }
    }
 }
@@ -80,12 +78,12 @@ void BuildHeap (Cidadao	* vet_reg)
 void heap_sort	(Cidadao	* vetor)
 {   long int i, atual;
 
-    for(i=qtd_registros-1; i>0; i--) /* percorre até a penúltima posição do vetor */
-    { /* (se todas as posições até a penúltima estiverem ordenadas, a última também estará) */
-        troca(  &vetor[0], &vetor[i]  ); /*...troca a posição corrente do heap com a 1a... */
-        /* i nao pertence mais ao vetor */
+    for(i=qtd_registros-1; i>0; i--) 
+    { 
+        troca(  &vetor[0], &vetor[i]  );
+
         atual = 0;
-        while ( direito(atual) <= (i-1) /* tenho 2 filhos */
+        while ( direito(atual) <= (i-1) 
                 &&
 			    ( vetor[atual].idade < vetor[esquerdo(atual)].idade
 				  ||
@@ -94,27 +92,25 @@ void heap_sort	(Cidadao	* vetor)
         {
             if ( vetor[esquerdo(atual)].idade > vetor[direito(atual)].idade ) 
             {
-            	troca(  &vetor[atual], &vetor[esquerdo(atual)]  ); /*troca o atual com o filho esquerdo*/
+            	troca(  &vetor[atual], &vetor[esquerdo(atual)]  ); 
                 atual = esquerdo(atual);
             } 
 			else 
 			{
-				troca(  &vetor[atual], &vetor[direito(atual)]  ); /*troca o atual com o filho direito*/
+				troca(  &vetor[atual], &vetor[direito(atual)]  ); 
                 atual = direito(atual);
             }
         }
-        /* Verificar se sobrou um filho (esquerdo) maior que o atual */
+
         if ( esquerdo(atual) <= i-1 
 		     && 
 		     vetor[atual].idade < vetor[esquerdo(atual)].idade )
         {
-            troca(  &vetor[atual], &vetor[esquerdo(atual)]  ); /*troca o atual com o filho esquerdo*/
+            troca(  &vetor[atual], &vetor[esquerdo(atual)]  ); 
             atual = esquerdo(atual);
         }
     }
 }
-
-/*-------------------------------------------------------------------------------------------*/
 
 /*------------------Funções específicas para a conversão do .CSV em .DAT --------------------*/
 
@@ -142,8 +138,7 @@ void consulta_dat(void)
 	printf ("#         IDADE	         NOME                                                                                                   \n");
 	printf ("______________________________________________________________________________________________________________________________________________________________________________________________________________________________________");
 	while ( !feof(ArqDat) )
-	{	// Limpa o registro 
-//		memset(reg.idade,       '\0', sizeof(reg.idade));
+	{	
 		memset(reg.nome,        '\0', sizeof(reg.nome));
 		reg.idade = 0;
 		cont++;
@@ -189,10 +184,8 @@ void consulta_dat_em_relatorio(void)
 	fprintf (Relat, "______________________________________________________________________________________________________________________________________________________________________________________________________________________________________\n");
 	fprintf (Relat, "#         IDADE	         NOME                                                                                                   \n");
 	fprintf (Relat, "______________________________________________________________________________________________________________________________________________________________________________________________________________________________________");
-	while ( !feof(ArqDat) )
-	{
-		// Limpa o registro 
-//		memset(reg.idade,       '\0', sizeof(reg.idade));
+	while ( !feof(ArqDat) ) {
+	
 		memset(reg.nome,     '\0', sizeof(reg.nome));
 		reg.idade = 0;
 		cont++;
@@ -224,9 +217,9 @@ void    abastece_vetor (Cidadao	* vet_reg)
 	}
 	
 	while ( !feof(ArqDat) )
-	{	// Lê um registro do arquivo MUNICIPES.DAT para o vetor (um de cada vez)
+	{
 	    fread (&vet_reg[i], sizeof(vet_reg[i]), 1, ArqDat);
-	    // Testa se deu erro de leitura
+	    
    	    if ( ferror(ArqDat) )
    	    {  system ("cls");
 		   printf ("Erro ao ler arquivo MUNICIPES.DAT no registro [%i]",i);
@@ -288,14 +281,12 @@ void teste_heapsort(void)
  	TAMANHO_VETOR = findSize("MUNICIPES.DAT");
 	qtd_registros = TAMANHO_VETOR/sizeof(Cidadao);
     system ("cls"); system ("mode 160, 1000"); 
-    // para debug
 	if (TAMANHO_VETOR != -1) 
 	{
 	    printf("Tamanho do arquivo MUNICIPES.DAT em bytes = %ld e tem %ld registros\n", 
 	          TAMANHO_VETOR, qtd_registros );
 //        Sleep(2000);
-    }
-	/* Tenta alocar um vetor com o tamanho do arquivo */   
+    } 
     vet_reg = (Cidadao *) malloc (qtd_registros * sizeof (Cidadao)); 
     if (vet_reg == NULL)
     {
@@ -313,22 +304,19 @@ void teste_heapsort(void)
 //    	Sleep(2000);
 	}
     
-    abastece_vetor(vet_reg);  		/* abastece o vetor com os registros de MUNICIPES.DAT */
+    abastece_vetor(vet_reg);  		
     printf ("\nExibindo o conteúdo do vetor...\n");
-    mostra_codigos(vet_reg);  		/* exibe os valores de idade              */   
-    
-	BuildHeap (vet_reg);      		/* transforma o vetor num heap                      */
+    mostra_codigos(vet_reg);  	
+	BuildHeap (vet_reg);      	
 	printf ("\nExibindo o heap de máximo construído...\n");
-    mostra_codigos(vet_reg);  		/* exibe os valores de idade              */   
+    mostra_codigos(vet_reg);  
     
-	heap_sort(vet_reg);       		/* faz a ordenação por heap_sort                    */
+	heap_sort(vet_reg);    
     printf ("\nExibindo o vetor ordenado...\n");
-	mostra_codigos(vet_reg);  		/* exibe os valores de idade JÁ ORDENADOS */   
-    
-	/* transfere o vetor ordenado para MUNICIPES.DAT      */
+	mostra_codigos(vet_reg);  
+
 	printf ("\nTransferindo o vetor ordenado para MUNICIPES.DAT...");
 	envia_vet_ordenado_dat (vet_reg);
-    //gera_dat ("idade.CSV", "MUNICIPES.DAT"); 
     consulta_dat_em_relatorio();
 }
 /* -------------------------- FILA -------------------- */
@@ -339,8 +327,6 @@ void inicializarfila (fila * p)
   p->fim    = NULL;
 }
 
-/* Já que não temos um campo com o número de elementos na fila, precisaremos percorrer todos os elementos para contar quantos são.
-*/
 int tamanho (fila* p) 
 {  
 	PONT    end = p->inicio;  
@@ -353,8 +339,7 @@ int tamanho (fila* p)
 	return tam;
 }
 
-/* Para exibir os elementos da estrutura precisaremos  percorrer os elementos (iniciando pelo elemento do início da fila) e, por exemplo, imprimir suas chaves. */
-void exibirfila (fila* p) 
+void exibirfila (fila* p)
 {  
    PONT end = p->inicio;  
    system ("cls");
@@ -367,7 +352,6 @@ void exibirfila (fila* p)
    printf("\"\n");
 }
 
-/* Se início está  armazenando o endereço NULL, significa que a fila está vazia. */
 bool estaVazia(fila* p) 
 {
    if (p->inicio == NULL) 
@@ -443,7 +427,6 @@ bool filaNoDat(fila * f, FILE *DAT) {
 	}
 	   
 	} else {
-//	   printf ("\nNao foi possivel excluir o registro.");
 	   return false;
 	 }
 	 
@@ -498,9 +481,6 @@ void consultaFila(void) {
 	getch();
 }
 
-/* 
-Para reinicializar a fila, precisamos excluir todos os  seus elementos e colocar NULL nos campos inicio e  fim
-*/
 void reinicializarFila(fila * f) 
 {  
    PONT end = f->inicio;
@@ -521,7 +501,7 @@ void reinicializarFila(fila * f)
 int main ()
 {	
 	setlocale (LC_ALL, "");  
-  	teste_heapsort();
+  teste_heapsort();
 
 	fila * F; 
 	Cidadao r;
