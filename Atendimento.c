@@ -514,10 +514,6 @@ void reinicializarFila(fila * f)
    f->inicio = NULL;  
    f->fim = NULL;
 }
-
-
-
-
 /* ---------------------------------- CORPO DO PROGRAMA ------------------------------------ */
 int main ()
 {	
