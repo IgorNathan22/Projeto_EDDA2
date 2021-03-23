@@ -310,12 +310,12 @@ void teste_heapsort(void)
 	BuildHeap (vet_reg);      	
 	printf ("\nExibindo o heap de máximo construído...\n");
     mostra_codigos(vet_reg);  
-    
-	heap_sort(vet_reg);    
-    printf ("\nExibindo o vetor ordenado...\n");
-	mostra_codigos(vet_reg);  
+    getch();
+//	heap_sort(vet_reg);    
+//    printf ("\nExibindo o vetor ordenado...\n");
+//	mostra_codigos(vet_reg);  
 
-	printf ("\nTransferindo o vetor ordenado para MUNICIPES.DAT...");
+//	printf ("\nTransferindo o vetor ordenado para MUNICIPES.DAT...");
 	envia_vet_ordenado_dat (vet_reg);
     consulta_dat_em_relatorio();
 }
@@ -534,12 +534,12 @@ int main ()
 	
 //	exibirfila(F);
 //	getch();
-//	consultaFila();
+	consultaFila();
 	
 	DAT = fopen("FILAVACINA.DAT", "rb+");
 	inserirNaFila(F, DAT);
 	fclose(DAT);
-	
+	consultaFila();
 //	exibirfila(F);
 	getch();
 	
