@@ -37,15 +37,21 @@ void statusmedico(MEDICO medico){
 }
 
 void tratarusuario(char usuario[43], int tamanhostring){
+	int i;
+	
 	if(tamanhostring >= 43 || tamanhostring == 0){
 		system ("color 40");
-		printf("\nNome de usuário inválido\n");
+		printf("\nNome de usuário inválido\n"); //Verifica se a entrada é nula ou maior que o registro
 		getch();
 		exit(0);
 	}
+	for(i = 0; i < tamanhostring; i++){
+		usuario[i] = toupper(usuario[i]); //Deixa todos os caracteres maiusculos
+	}
+	
 	tamanhostring + 1;
 	while(tamanhostring != 42){
-		usuario[tamanhostring] = ' ';
+		usuario[tamanhostring] = ' '; //Preenche os espaços restantes
 		tamanhostring++;
 	}
 }

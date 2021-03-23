@@ -3,6 +3,7 @@
 #include <conio.h>
 #include <locale.h>
 #include <string.h>
+#include <ctype.h>
 
 #define false -1
 #define true 1
