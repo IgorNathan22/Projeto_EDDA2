@@ -88,7 +88,7 @@ void consulta_dat_em_relatorio1()
 	long int 			cont=0;
 	int 				qtd_registros;
 	
-	system ("cls"); system ("mode 170,50");
+//	system ("cls"); system ("mode 170,50");
 
 	tamanhovetor  = findSize("SUPORTE_1.dat");
 	qtd_registros = tamanhovetor/sizeof(SUPORTE);
@@ -141,7 +141,7 @@ void consulta_dat_em_relatorio2()
 	long int 			cont=0;
 	int 				qtd_registros;
 	
-	system ("cls"); system ("mode 170,50");
+//	system ("cls"); system ("mode 170,50");
 
 	tamanhovetor  = findSize("SUPORTE_2.dat");
 	qtd_registros = tamanhovetor/sizeof(SUPORTE);
@@ -194,7 +194,7 @@ void consulta_dat_em_relatorio3()
 	long int 			cont=0;
 	int 				qtd_registros;
 	
-	system ("cls"); system ("mode 170,50");
+//	system ("cls"); system ("mode 170,50");
 
 	tamanhovetor  = findSize("SUPORTE_3.dat");
 	qtd_registros = tamanhovetor/sizeof(SUPORTE);
@@ -246,7 +246,7 @@ void consulta_dat_em_relatorio4()
 	long int 			cont=0;
 	int 				qtd_registros;
 	
-	system ("cls"); system ("mode 170,50");
+//	system ("cls"); system ("mode 170,50");
 
 	tamanhovetor  = findSize("SUPORTE_4.dat");
 	qtd_registros = tamanhovetor/sizeof(SUPORTE);
@@ -298,7 +298,7 @@ void consulta_dat_em_relatorio5()
 	long int 			cont=0;
 	int 				qtd_registros;
 	
-	system ("cls"); system ("mode 170,50");
+//	system ("cls"); system ("mode 170,50");
 
 	tamanhovetor  = findSize("SUPORTE_5.dat");
 	qtd_registros = tamanhovetor/sizeof(SUPORTE);
