@@ -4,7 +4,6 @@ typedef  int   bool;
 FILE *arqCsv;
 FILE *arqDat;
 MEDICO medico;
-int i;
 int tamanhovetor;
 int qntregistros;
 void envia_vet_ordenado_dat(MEDICO * vetormedico);
@@ -312,6 +311,6 @@ int main(){
 	//mostraDAT();
 	//printf("\nOperação concluida! \nLinhas convertidas: %i\n", qntregistros);
 	printf("\n\tArquivo MEDICOSCREMESP.CSV carregado com sucesso\n");
-	getch();
+//	getch();
 	return(0);
 };
