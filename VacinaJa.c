@@ -1,8 +1,6 @@
-typedef int bool;
-#include <stdio.h>
-#include <stdlib.h>
 #include "bibliotecas\\mensagens.h"
 #include "bibliotecas\\funcoes_gerais.h"
+
 FILE *arqDat;
 MEDICO medico;
 int tamanhovetor;

@@ -4,8 +4,7 @@
 #include <locale.h>
 #include <string.h>
 #include <ctype.h>
-
-#define false -1
+#define false 0
 #define true 1
 
 FILE      *DAT;
@@ -15,7 +14,9 @@ FILE *sup2;
 FILE *sup3;
 FILE *sup4;
 FILE *sup5;
+
 long int       i, cont;
+typedef int bool;
 
 typedef struct   
 {          

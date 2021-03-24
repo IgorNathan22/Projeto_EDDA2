@@ -450,3 +450,18 @@ BAIRRO:	Copacabana
 CEP: 	22021000
 EMAIL: 	detstcz@yahoo.com.br                    
 TELEFONE: 21978554344}
+
+REGISTRO DO MUNÍCIPE:{
+NOME: 	IGOR NATHAN                                  
+DATA DE NASCIMENTO: 09/11/2001
+CPF: 	50704512454
+PAÍS: 	BRASIL    
+ESTADO: SAO PAULO           
+MUNICÍPIO: BARUERI                       
+LOGRADOURO: RUA ENGENHEIRO ALVES          
+NÚMERO DO ENDEREÇO: 123    
+COMPLEMENTO: 	              
+BAIRRO:	CENTRO              
+CEP: 	06273626
+EMAIL: 	IGOR@GMAIL.COM                          
+TELEFONE: 1198746827}

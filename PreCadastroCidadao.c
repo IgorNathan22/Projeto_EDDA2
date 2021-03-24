@@ -177,11 +177,6 @@ void cadastrarcidadao(void){
 	gets(cid.nasc);
 	printf("\n----------------------\n");
 	
-	printf("\nIdade			: ");
-	fflush(stdin);
-	scanf("%i", &cid.idade);
-	printf("\n----------------------\n");
-	
 	printf("\nCPF			: ");
 	fflush(stdin);
 	gets(cid.cpf);
@@ -243,7 +238,7 @@ void cadastrarcidadao(void){
 		getch();
 		exit(0);
 	}
-	printf("\nCadastro do %s concluído com sucesso!\n", cid.nome);
+	printf("\nCadastro munícipe [%s] concluído com sucesso!\n", cid.nome);
 	getch();
 	fclose(arqDat);
 }
