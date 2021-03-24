@@ -5,7 +5,6 @@ typedef  int   bool;
 FILE *arqCsv;
 FILE *arqDat;
 Cidadao cid;
-int i;
 int qntlinhas;
 
 //atoi()

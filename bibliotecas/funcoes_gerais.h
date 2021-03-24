@@ -70,6 +70,7 @@ typedef struct{
 	char cep[10+1];
 	char email[50+1];
 	char tel[15+1];
+	int pos_fila;
 }Cidadao;
 
 typedef struct {

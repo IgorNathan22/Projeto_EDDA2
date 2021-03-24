@@ -103,7 +103,7 @@ void atualizaArquivos(fila *f, PILHA *p, char file_name[]) {
 	fclose(DATM);
 	
 	consultaFila();
-	consultaSuporte(file_name);
+//	consultaSuporte(file_name);
 }
 /* ------------------------------------ HEAP SORT ------------------------- */
 int esquerdo(int i) 
@@ -123,9 +123,9 @@ int pai(int i)
 
 void troca (Cidadao *A, Cidadao *B) 
 {
-  Cidadao auxC = *A; 
+  Cidadao aux = *A; 
   *A = *B; 
-  *B = auxC;
+  *B = aux;
 }
 
 void BuildHeap (Cidadao	* vet_reg)
@@ -371,7 +371,7 @@ void inicializarfila (fila * p)
   p->fim    = NULL;
 }
 
-int tamanhoFF (fila* p) 
+int tamanhoF (fila* p) 
 {  
 	PONTC    end = p->inicio;  
 	int     tam = 0;
@@ -417,10 +417,52 @@ void inserirNaFila (fila * f, FILE *DAT)
 		getch();
 		exit(0);
 	}
-	
+	i = 1;
 	while (!feof(DAT))
 	{
+		
 		/* lê o DAT */
+
+		fread (&reg, sizeof(reg), 1, DAT);
+		reg.pos_fila = i;
+		if ( ferror(DAT) )
+		{
+			system ("cls");
+			printf ("\n  ERRO AO LER ARQUIVO .DAT  ");
+			getch();
+			exit(0);
+		}
+		
+		if (feof(DAT)) break;
+		
+   PONTC novo = (PONTC) malloc(sizeof(ELEMENTOC));  
+   novo->reg = reg;
+   novo->PROX = NULL;
+   if (f->inicio==NULL) 
+      f->inicio = novo;  
+   else 
+      f->fim->PROX = novo;
+   f->fim = novo;
+   
+   i++;
+  }
+  
+}
+
+void inserirNaFilaVac(fila *f, FILE *DAT) {
+	 system("cls");
+	 
+	 Cidadao reg;
+	 
+	if (DAT==NULL)
+	{
+		system ("cls");
+		printf ("\n  ERRO AO ABRIR ARQUIVO .DAT  ");
+		getch();
+		exit(0);
+	}
+	while (!feof(DAT))
+	{
 		fread (&reg, sizeof(reg), 1, DAT);
 		if ( ferror(DAT) )
 		{
@@ -440,8 +482,9 @@ void inserirNaFila (fila * f, FILE *DAT)
    else 
       f->fim->PROX = novo;
    f->fim = novo;
-  }
-  
+   
+   i++;
+	}
 }
 
 bool excluiDaFila(fila * f, Cidadao* reg) {
@@ -545,6 +588,34 @@ void consultaFila(void) {
 	getch();
 }
 
+void geraRelatorioVacina(Cidadao regExcluido , SUPORTE supExcluido) {
+	int tamanho = ((int) findSize("FILAVACINA.DAT") ) /sizeof(regExcluido);
+	time_t t = time(NULL);
+  struct tm tm = *localtime(&t);
+	
+	FILE *Relat = fopen("COMPROVANTE.TXT", "wb+");
+	if ( Relat==NULL )
+	{
+		system ("cls");
+		printf ("Erro ao gerar arquivo COMPROVANTE.TXT");
+		getch();
+		exit(0);
+	}
+	
+	fprintf(Relat, "\n\t\t\t    ATENDIMENTO");
+	fprintf(Relat, "\n________________________________________________________________________");
+	fprintf(Relat, "\n\n  NOME: %-50s", &regExcluido.nome);
+	fprintf(Relat, "[%i/%i]", regExcluido.pos_fila, tamanho);
+	fprintf(Relat, "\n\n  CPF: %s", &regExcluido.cpf);
+	fprintf(Relat, "\n\n  %s [Lote: %s/Frasco: %i]", &supExcluido.nome, supExcluido.id_lote, supExcluido.id_frasco);
+	fprintf(Relat, "\n\n  Primeira dose: %02d/%02d/%d", tm.tm_mday, tm.tm_mon +1, tm.tm_year + 1900);
+	fprintf(Relat, "\n\n  Segunda dose:  %02d/%02d/%d", tm.tm_mday, tm.tm_mon +2, tm.tm_year + 1900);
+	
+	fclose(Relat);
+	system("notepad COMPROVANTE.TXT");
+//	getch();
+}
+
 void removerFilaExibir(fila * f, PILHA * p, char file_name[]) {
 	
 	time_t t = time(NULL);
@@ -554,33 +625,41 @@ void removerFilaExibir(fila * f, PILHA * p, char file_name[]) {
 	SUPORTE supExcluido;
 	
 	int tamanho = ((int) findSize("FILAVACINA.DAT") ) /sizeof(regExcluido);
-	int i = 1;
-	
-	
-	while(estaVaziaF(f) != true) {
-		
-		if ( excluiDaFila(f, &regExcluido) == true && excluirElemPilha(p, &supExcluido)) {
-			system("cls"); system("mode 73,15");
-			printf("\n\t\t\t    ATENDIMENTO");
-			printf("\n________________________________________________________________________");
-			printf("\n\n  NOME: %-50s", regExcluido.nome);
-			printf("[%i/%i]", i, tamanho);
-			printf("\n\n  CPF: %s", regExcluido.cpf);
-			printf("\n\n  %s [Lote: %s/Frasco: %i]", supExcluido.nome, supExcluido.id_lote, supExcluido.id_frasco);
-			printf("\n\n  Primeira dose: %02d/%02d/%d", tm.tm_mday, tm.tm_mon +1, tm.tm_year + 1900);
-		}	printf("\n\n  Segunda dose:  %02d/%02d/%d", tm.tm_mday, tm.tm_mon +2, tm.tm_year + 1900);
-		getch();
-		
-		if(estaVazia(p) == true) {
-			msg_sem_vacina();
-			break;
-		}
-		i++;
-	}	
 	
 	if(estaVaziaF(f) == true) {
 		msg_fila_vazia();
+		exit(0);
 	}
+	
+	char opc;
+	
+		 do {
+		 	
+		 	if(estaVaziaF(f) == true) {
+				msg_fila_vazia();
+				exit(0);
+			}
+		 	
+			if ( excluiDaFila(f, &regExcluido) == true && excluirElemPilha(p, &supExcluido)) {
+				system("cls"); system("mode 73,15");
+				printf("\n\t\t\t    ATENDIMENTO");
+				printf("\n________________________________________________________________________");
+				printf("\n\n  NOME: %-50s", regExcluido.nome);
+				printf("[%i/%i]", regExcluido.pos_fila, tamanho);
+				printf("\n\n  CPF: %s", regExcluido.cpf);
+				printf("\n\n  %s [Lote: %s/Frasco: %i]", supExcluido.nome, supExcluido.id_lote, supExcluido.id_frasco);
+				printf("\n\n  Primeira dose: %02d/%02d/%d", tm.tm_mday, tm.tm_mon +1, tm.tm_year + 1900);
+				printf("\n\n  Segunda dose:  %02d/%02d/%d", tm.tm_mday, tm.tm_mon +2, tm.tm_year + 1900);
+				geraRelatorioVacina(regExcluido, supExcluido);
+				printf("\n\n\n\t Atender mais uma pessoa? SIM[s] / NAO [n]: ");
+				fflush(stdin); opc = getche();
+			}
+		} while(opc != 'n' && opc != 'N');
+		
+		if(estaVazia(p) == true) {
+			msg_sem_vacina();
+			exit(0);
+		}
 	
 	atualizaArquivos(f, p, file_name);
 
@@ -614,7 +693,7 @@ void HeapFila(fila * F, PILHA * pil, char file_name[]) {
 	fclose(DAT);
 	
 	DAT = fopen("FILAVACINA.DAT", "rb+");
-	inserirNaFila(F, DAT);
+	inserirNaFilaVac(F, DAT);
 	fclose(DAT);
 	
 	removerFilaExibir(F, pil, file_name);
